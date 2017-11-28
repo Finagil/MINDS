@@ -568,8 +568,8 @@ Public Class FrmMINDS
     End Sub
 
     Private Sub BttPromo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BttPromo.Click
-        Dim ta As New MIDS.ProductionDataSetTableAdapters.PromotoresTableAdapter
-        Dim ta1 As New MIDS.Minds2DSTableAdapters.layoutsFuncionarioTableAdapter
+        Dim ta As New MINDS.ProductionDataSetTableAdapters.PromotoresTableAdapter
+        Dim ta1 As New MINDS.Minds2DSTableAdapters.layoutsFuncionarioTableAdapter
         Dim PromoOrg As New ProductionDataSet.PromotoresDataTable
         Try
             ta.Fill(PromoOrg)
@@ -994,8 +994,8 @@ Public Class FrmMINDS
             '    cDoc = Trim(r.Serie) & "-" & Trim(r.Numero) & "-" & Trim(r.Anexo) & Trim(r.Tipar)
             'End If
             cDoc = Trim(r.Serie) & Trim(r.Numero) & "-" & cCheque
-            x = Pagos.Existe(cDoc)
-            If nPago > 0 And r.Tipar <> "A" And x = 0 Then
+            'x = Pagos.Existe(cDoc)
+            If nPago > 0 Then
                 Try
                     Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, r.Promo, cSucursal, cFechafin, nSaldo, 0)
                     Contador += 1
