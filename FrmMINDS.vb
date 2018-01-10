@@ -694,7 +694,12 @@ Public Class FrmMINDS
 
             If drAnexo("letra") = "888" Or drAnexo("letra") = "999" Then
                 cDoc = Trim(drAnexo("Serie")) & Trim(drAnexo("Numero")) & "-" & cCheque.Trim & "-" & drAnexo("Anexo")
-                cDoc = cDoc.Substring(0, 28) & CInt(Math.Ceiling(Rnd() * 9)) + 1
+                If cDoc.Length >= 28 Then
+                    cDoc = cDoc.Substring(0, 28) & CInt(Math.Ceiling(Rnd() * 9)) + 1
+                Else
+                    cDoc = cDoc.Substring(0, cDoc.Length) & CInt(Math.Ceiling(Rnd() * 9)) + 1
+                End If
+
             End If
 
             If nPago <> 0 Then
