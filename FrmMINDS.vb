@@ -102,7 +102,7 @@ Public Class FrmMINDS
             cImporte = drAnexo("MtoFin").ToString
             cFecha = CTOD(drAnexo("Fechacon")).ToShortDateString
 
-            nCount = 0
+            'nCount = 0
             ' cProduct = "CREDITO"
             ' cSubProduct = "SIMPLE"
             cProduct = "3"
@@ -611,7 +611,7 @@ Public Class FrmMINDS
         Dim cSucursal As String
         Dim cCheque As String
         Dim cDoc As String
-        Dim nCount As Integer
+        'Dim nCount As Integer
         Dim nOper As Integer
         Dim nInsMon As Integer
         Dim y As Integer
@@ -632,14 +632,14 @@ Public Class FrmMINDS
         'dsAgil.Tables("Pagos").Clear()
         With cm1
             .CommandType = CommandType.Text
-            .CommandText = "SELECT Serie, Numero, Fecha, Anexo,Letra, Importe, Cheque, Promo, Cliente, Sucursal, Tipar, EsEfectivo, Banco, minds " _
+            .CommandText = "SELECT Fecha, Anexo,Letra, Importe, Cheque, Promo, Cliente, Sucursal, Tipar, EsEfectivo, Banco, minds " _
              & " FROM Minds_Pagos where fecha between '" & fecha.ToString("yyyyMMdd") & "' and '" & fechaLim.ToString("yyyyMMdd") _
-             & "' and anexo <> 'X038790001' order by Serie, Numero"
+             & "' and anexo <> 'X038790001' order by Fecha, Anexo"
             .Connection = cnAgil
         End With
 
         daAnexos.Fill(dsAgil, "Pagos")
-        nCount = 1
+        'nCount = 1
         nPago = 0
         For Each drAnexo In dsAgil.Tables("Pagos").Rows
 
@@ -684,16 +684,18 @@ Public Class FrmMINDS
                 nOper = 41
             End If
             cPago = Stuff(nPago.ToString, i, " ", 10)
-            nCount = drAnexo("Numero")
+            'nCount = drAnexo("Numero")
             'If nCount = 999999 Or nCount = 888888 Or nCount = 777777 Then
             '    cDoc = Trim(drAnexo("Serie")) & Trim(drAnexo("Numero")) & "-" & cAnexo
             'Else
             '    cDoc = Trim(drAnexo("Serie")) & "-" & Trim(drAnexo("Numero")) & "-" & Trim(drAnexo("Letra"))
             'End If
-            cDoc = Trim(drAnexo("Serie")) & Trim(drAnexo("Numero")) & "-" & cCheque ''& "-" & drAnexo("Banco")
+            'cDoc = Trim(drAnexo("Serie")) & Trim(drAnexo("Numero")) & "-" & cCheque ''& "-" & drAnexo("Banco")
+            cDoc = cCheque.Trim & "-" & cAnexo & "-" & drAnexo("Letra")
 
             If drAnexo("letra") = "888" Or drAnexo("letra") = "999" Then
-                cDoc = Trim(drAnexo("Serie")) & Trim(drAnexo("Numero")) & "-" & cCheque.Trim & "-" & drAnexo("Anexo")
+                'cDoc = Trim(drAnexo("Serie")) & Trim(drAnexo("Numero")) & "-" & cCheque.Trim & "-" & drAnexo("Anexo")
+                cDoc = cCheque.Trim & "-" & drAnexo("Anexo")
                 If cDoc.Length >= 28 Then
                     cDoc = cDoc.Substring(0, 28) & CInt(Math.Ceiling(Rnd() * 9)) + 1
                 Else
@@ -703,12 +705,12 @@ Public Class FrmMINDS
             End If
 
             If nPago <> 0 Then
-                Try
-                    Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0)
-                    Contador += 1
-                Catch ex As Exception
-                    MessageBox.Show(ex.Message & " " & cDoc, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                End Try
+                'Try
+                Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0)
+                Contador += 1
+                'Catch ex As Exception
+                'MessageBox.Show(ex.Message & " " & cDoc, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                'End Try
 
             End If
             nPago = 0
@@ -723,7 +725,7 @@ Public Class FrmMINDS
             .Connection = cnAgil
         End With
         daAnexos.Fill(dsAgil, "Pagos")
-        nCount = 1
+        'nCount = 1
         nPago = 0
         'MessageBox.Show(dsAgil.Tables("Pagos").Rows.Count.ToString & " pagos")
         For Each drAnexo In dsAgil.Tables("Pagos").Rows
@@ -745,9 +747,9 @@ Public Class FrmMINDS
             nOper = 9
             cPago = Stuff(nPago.ToString, i, " ", 10)
 
-            nCount = drAnexo("Numero")
+            'nCount = drAnexo("Numero")
             'cDoc = Trim(drAnexo("Serie")) & Trim(drAnexo("Numero")) & "-" & cCheque
-            cDoc = cAnexo & "-" & cCheque
+            cDoc = cAnexo & "-" & cCheque.Trim
             If nPago > 0 Then
                 x = Pagos.Existe(cDoc)
                 If x = 0 Then
@@ -771,7 +773,7 @@ Public Class FrmMINDS
             .Connection = cnAgil
         End With
         daAnexos.Fill(dsAgil, "Pagos")
-        nCount = 1
+        'nCount = 1
         nPago = 0
         For Each drAnexo In dsAgil.Tables("Pagos").Rows
 
@@ -808,13 +810,14 @@ Public Class FrmMINDS
                 nOper = 9
             End If
             cPago = Stuff(nPago.ToString, i, " ", 10)
-            nCount = drAnexo("Numero")
+            'nCount = drAnexo("Numero")
             'If nCount = 999999 Or nCount = 888888 Or nCount = 777777 Then
             '    cDoc = Trim(drAnexo("Serie")) & Trim(drAnexo("Numero")) & "-" & cAnexo
             'Else
             '    cDoc = Trim(drAnexo("Serie")) & "-" & Trim(drAnexo("Numero")) & "-" & Trim(drAnexo("Letra"))
             'End If
-            cDoc = Trim(drAnexo("Serie")) & Trim(drAnexo("Numero")) & "-" & cCheque
+            'cDoc = Trim(drAnexo("Serie")) & Trim(drAnexo("Numero")) & "-" & cCheque
+            cDoc = cCheque.Trim & "-" & cAnexo
 
             If nPago > 0 Then
                 x = Pagos.Existe(cDoc)
@@ -855,7 +858,7 @@ Public Class FrmMINDS
         Dim cSucursal As String
         Dim cCheque As String
         Dim cDoc As String
-        Dim nCount As Integer
+        'Dim nCount As Integer
         Dim nOper As Integer
         Dim nInsMon As Integer
         Dim y As Integer
@@ -877,11 +880,11 @@ Public Class FrmMINDS
         With cm1
             .CommandType = CommandType.Text
             .CommandText = "SELECT * " _
-            & "FROM Minds_PagosReleConcetradorasAVI where fecha between '" & fecha.ToString("yyyyMMdd") & "' and '" & fechaLim.ToString("yyyyMMdd") & "'  order by Serie, Numero"
+            & "FROM Minds_PagosReleConcetradorasAVI where fecha between '" & fecha.ToString("yyyyMMdd") & "' and '" & fechaLim.ToString("yyyyMMdd") & "'  order by Anexo, Fecha"
             .Connection = cnAgil
         End With
         daAnexos.Fill(dsAgil, "Pagos")
-        nCount = 1
+        'nCount = 1
         nPago = 0
         'MessageBox.Show(dsAgil.Tables("Pagos").Rows.Count.ToString & " pagos")
         For Each drAnexo In dsAgil.Tables("Pagos").Rows
@@ -905,9 +908,9 @@ Public Class FrmMINDS
             nOper = 9
             cPago = Stuff(nPago.ToString, i, " ", 10)
 
-            nCount = drAnexo("Numero")
+            'nCount = drAnexo("Numero")
             'cDoc = Trim(drAnexo("Serie")) & Trim(drAnexo("Numero")) & "-" & cCheque
-            cDoc = cAnexo & "-" & cCheque
+            cDoc = cAnexo & "-" & cCheque.Trim
             If nPago > 0 Then
                 x = Pagos.Existe(cDoc)
                 If x = 0 Then
@@ -931,7 +934,7 @@ Public Class FrmMINDS
         End With
 
         daAnexos.Fill(dsAgil, "Pagos")
-        nCount = 1
+        'nCount = 1
         nPago = 0
         For Each drAnexo In dsAgil.Tables("Pagos").Rows
             'se filtra desde codigo para tuning de query
@@ -955,8 +958,9 @@ Public Class FrmMINDS
                 nPago = drAnexo("Importe")
                 nOper = 9
                 cPago = Stuff(nPago.ToString, i, " ", 10)
-                nCount = drAnexo("Numero")
-                cDoc = Trim(drAnexo("Serie")) & Trim(drAnexo("Numero")) & "-" & cCheque
+                'nCount = drAnexo("Numero")
+                'cDoc = Trim(drAnexo("Serie")) & Trim(drAnexo("Numero")) & "-" & cCheque
+                cDoc = cCheque.Trim & "-" & cAnexo
                 If nPago > 0 Then
                     x = Pagos.Existe(cDoc)
                     If x = 0 Then
@@ -992,13 +996,14 @@ Public Class FrmMINDS
             nOper = 9
 
             cPago = Stuff(nPago.ToString, i, " ", 10)
-            nCount = r.Numero
+            'nCount = r.Numero
             'If nCount = 999999 Or nCount = 888888 Or nCount = 777777 Then
             '    cDoc = Trim(r.Serie) & Trim(r.Numero) & "-" & cAnexo
             'Else
             '    cDoc = Trim(r.Serie) & "-" & Trim(r.Numero) & "-" & Trim(r.Anexo) & Trim(r.Tipar)
             'End If
-            cDoc = Trim(r.Serie) & Trim(r.Numero) & "-" & cCheque
+            'cDoc = Trim(r.Serie) & Trim(r.Numero) & "-" & cCheque
+            cDoc = cCheque.Trim & "-" & cAnexo
             'x = Pagos.Existe(cDoc)
             If nPago > 0 Then
                 Try
