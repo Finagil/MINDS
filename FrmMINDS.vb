@@ -701,7 +701,6 @@ Public Class FrmMINDS
                 Else
                     cDoc = cDoc.Substring(0, cDoc.Length) & CInt(Math.Ceiling(Rnd() * 9)) + 1
                 End If
-
             End If
 
             If nPago <> 0 Then
@@ -960,7 +959,7 @@ Public Class FrmMINDS
                 cPago = Stuff(nPago.ToString, i, " ", 10)
                 'nCount = drAnexo("Numero")
                 'cDoc = Trim(drAnexo("Serie")) & Trim(drAnexo("Numero")) & "-" & cCheque
-                cDoc = cCheque.Trim & "-" & cAnexo
+                cDoc = cCheque.Trim & "-" & cAnexo & drAnexo("Ciclo")
                 If nPago > 0 Then
                     x = Pagos.Existe(cDoc)
                     If x = 0 Then
