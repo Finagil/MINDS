@@ -618,6 +618,7 @@ Public Class FrmMINDS
         Dim nPago As Decimal
         Dim nSaldo As Decimal
         Dim x As Integer
+        Dim cProduct As Integer
 
 
         Dim cm2 As New SqlCommand()
@@ -632,7 +633,7 @@ Public Class FrmMINDS
         'dsAgil.Tables("Pagos").Clear()
         With cm1
             .CommandType = CommandType.Text
-            .CommandText = "SELECT Fecha, Anexo,Letra, Importe, Cheque, Promo, Cliente, Sucursal, Tipar, EsEfectivo, Banco, minds " _
+            .CommandText = "SELECT Fecha, Anexo,Letra, Importe, Cheque, Promo, Cliente, Sucursal, Tipar, EsEfectivo, Banco, minds, LiquidezInmediata " _
              & " FROM Minds_Pagos where fecha between '" & fecha.ToString("yyyyMMdd") & "' and '" & fechaLim.ToString("yyyyMMdd") _
              & "' and anexo <> 'X038790001' order by Fecha, Anexo"
             .Connection = cnAgil
@@ -650,12 +651,35 @@ Public Class FrmMINDS
             cCheque = drAnexo("Cheque")
             cFecha = CTOD(drAnexo("Fecha")).ToShortDateString
 
+            Select Case drAnexo("Tipar")
+                Case "F"
+                    '    cProduct = "ARRENDAMIENTO"
+                    '   cSubProduct = "FINANCIERO"
+                    cProduct = "1"
+                Case "P"
+                    ' cProduct = "ARRENDAMIENTO"
+                    ' cSubProduct = "PURO"
+                    cProduct = "2"
+                Case "R"
+                    'cProduct = "CREDITO"
+                    'cSubProduct = "REFACCIONARIO"
+                    cProduct = "8"
+                Case "S"
+                    ' cProduct = "CREDITO"
+                    ' cSubProduct = "SIMPLE"
+                    If drAnexo("LiquidezInmediata") = True Then
+                        cProduct = "11"
+                    Else
+                        cProduct = "3"
+                    End If
+            End Select
+
             nInsMon = InstrumentoMonetario(cCheque, drAnexo("EsEfectivo"), IIf(IsDBNull(drAnexo("Minds")), 0, drAnexo("Minds")))
 
             EdoCtaV.Fill(TEdoCtaV, cAnexo, drAnexo("letra"))
             If TEdoCtaV.Rows.Count > 0 Then
                 nSaldo = TEdoCtaV.Rows(0).Item("Saldo")
-            ElseIf drAnexo("letra") = "888" Then
+            ElseIf drAnexo("letra") = "888" Or drAnexo("letra") = "000" Then
                 nSaldo = EdoCtaV.ScalarSaldoII(cAnexo, drAnexo("Fecha"))
             Else
                 nSaldo = 0
@@ -704,12 +728,12 @@ Public Class FrmMINDS
             End If
 
             If nPago <> 0 Then
-                'Try
-                Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0)
-                Contador += 1
-                'Catch ex As Exception
-                'MessageBox.Show(ex.Message & " " & cDoc, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                'End Try
+                Try
+                    Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0, cProduct)
+                    Contador += 1
+                Catch ex As Exception
+                    MessageBox.Show(ex.Message & " " & cDoc, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End Try
 
             End If
             nPago = 0
@@ -736,6 +760,29 @@ Public Class FrmMINDS
             cCheque = Trim(drAnexo("Cheque"))
             cFecha = CTOD(drAnexo("Fecha")).ToShortDateString
 
+            Select Case drAnexo("Tipar")
+                Case "F"
+                    '    cProduct = "ARRENDAMIENTO"
+                    '   cSubProduct = "FINANCIERO"
+                    cProduct = "1"
+                Case "P"
+                    ' cProduct = "ARRENDAMIENTO"
+                    ' cSubProduct = "PURO"
+                    cProduct = "2"
+                Case "R"
+                    'cProduct = "CREDITO"
+                    'cSubProduct = "REFACCIONARIO"
+                    cProduct = "8"
+                Case "S"
+                    ' cProduct = "CREDITO"
+                    ' cSubProduct = "SIMPLE"
+                    If drAnexo("LiquidezInmediata") = True Then
+                        cProduct = "11"
+                    Else
+                        cProduct = "3"
+                    End If
+            End Select
+
             nInsMon = InstrumentoMonetario(cCheque, drAnexo("EsEfectivo"), IIf(IsDBNull(drAnexo("Minds")), 0, drAnexo("Minds")))
             'nInsMon = 1 ' para que todo se reporte en minds como efectivo Karla Sanchez
 
@@ -753,7 +800,7 @@ Public Class FrmMINDS
                 x = Pagos.Existe(cDoc)
                 If x = 0 Then
                     Try
-                        Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0)
+                        Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0, cProduct)
                         Contador += 1
                     Catch ex As Exception
 
@@ -782,6 +829,29 @@ Public Class FrmMINDS
             cPromo = drAnexo("Promo")
             cCheque = drAnexo("Cheque")
             cFecha = CTOD(drAnexo("Fecha")).ToShortDateString
+
+            Select Case drAnexo("Tipar")
+                Case "F"
+                    '    cProduct = "ARRENDAMIENTO"
+                    '   cSubProduct = "FINANCIERO"
+                    cProduct = "1"
+                Case "P"
+                    ' cProduct = "ARRENDAMIENTO"
+                    ' cSubProduct = "PURO"
+                    cProduct = "2"
+                Case "R"
+                    'cProduct = "CREDITO"
+                    'cSubProduct = "REFACCIONARIO"
+                    cProduct = "8"
+                Case "S"
+                    ' cProduct = "CREDITO"
+                    ' cSubProduct = "SIMPLE"
+                    If drAnexo("LiquidezInmediata") = True Then
+                        cProduct = "11"
+                    Else
+                        cProduct = "3"
+                    End If
+            End Select
 
             nInsMon = InstrumentoMonetario(cCheque, drAnexo("EsEfectivo"), IIf(IsDBNull(drAnexo("Minds")), 0, drAnexo("Minds")))
 
@@ -822,7 +892,7 @@ Public Class FrmMINDS
                 x = Pagos.Existe(cDoc)
                 If x = 0 Then
                     Try
-                        Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0)
+                        Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0, cProduct)
                         Contador += 1
                     Catch ex As Exception
 
@@ -864,7 +934,7 @@ Public Class FrmMINDS
         Dim nPago As Decimal
         Dim nSaldo As Decimal
         Dim x As Integer
-
+        Dim cProduct As Integer = 9
 
         Dim cm2 As New SqlCommand()
         Dim dsReporte As New DataSet()
@@ -897,6 +967,29 @@ Public Class FrmMINDS
             cCheque = Trim(drAnexo("Cheque"))
             cFecha = CTOD(drAnexo("Fecha")).ToShortDateString
 
+            Select Case drAnexo("Tipar")
+                Case "F"
+                    '    cProduct = "ARRENDAMIENTO"
+                    '   cSubProduct = "FINANCIERO"
+                    cProduct = "1"
+                Case "P"
+                    ' cProduct = "ARRENDAMIENTO"
+                    ' cSubProduct = "PURO"
+                    cProduct = "2"
+                Case "R"
+                    'cProduct = "CREDITO"
+                    'cSubProduct = "REFACCIONARIO"
+                    cProduct = "8"
+                Case "S"
+                    ' cProduct = "CREDITO"
+                    ' cSubProduct = "SIMPLE"
+                    If drAnexo("LiquidezInmediata") = True Then
+                        cProduct = "11"
+                    Else
+                        cProduct = "3"
+                    End If
+            End Select
+
             nInsMon = InstrumentoMonetario(cCheque, drAnexo("EsEfectivo"), IIf(IsDBNull(drAnexo("Minds")), 0, drAnexo("Minds")))
 
             'nInsMon = 1 ' para que todo se reporte en minds como efectivo Karla Sanchez
@@ -914,7 +1007,7 @@ Public Class FrmMINDS
                 x = Pagos.Existe(cDoc)
                 If x = 0 Then
                     Try
-                        Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0)
+                        Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0, cProduct)
                         Contador += 1
                     Catch ex As Exception
 
@@ -946,6 +1039,29 @@ Public Class FrmMINDS
                 cCheque = drAnexo("Cheque")
                 cFecha = CTOD(drAnexo("Fecha")).ToShortDateString
 
+                Select Case drAnexo("Tipar")
+                    Case "F"
+                        '    cProduct = "ARRENDAMIENTO"
+                        '   cSubProduct = "FINANCIERO"
+                        cProduct = "1"
+                    Case "P"
+                        ' cProduct = "ARRENDAMIENTO"
+                        ' cSubProduct = "PURO"
+                        cProduct = "2"
+                    Case "R"
+                        'cProduct = "CREDITO"
+                        'cSubProduct = "REFACCIONARIO"
+                        cProduct = "8"
+                    Case "S"
+                        ' cProduct = "CREDITO"
+                        ' cSubProduct = "SIMPLE"
+                        If drAnexo("LiquidezInmediata") = True Then
+                            cProduct = "11"
+                        Else
+                            cProduct = "3"
+                        End If
+                End Select
+
                 nInsMon = InstrumentoMonetario(cCheque, drAnexo("EsEfectivo"), IIf(IsDBNull(drAnexo("Minds")), 0, drAnexo("Minds")))
 
                 taMAX.Fill(MAXfecVen, cAnexo)
@@ -964,7 +1080,7 @@ Public Class FrmMINDS
                     x = Pagos.Existe(cDoc)
                     If x = 0 Then
                         Try
-                            Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0)
+                            Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0, cProduct)
                             Contador += 1
                         Catch ex As Exception
 
@@ -988,6 +1104,29 @@ Public Class FrmMINDS
             cCheque = r.Cheque
             cFecha = CTOD(r.Fecha).ToShortDateString
 
+            Select Case r.Tipar
+                Case "F"
+                    '    cProduct = "ARRENDAMIENTO"
+                    '   cSubProduct = "FINANCIERO"
+                    cProduct = "1"
+                Case "P"
+                    ' cProduct = "ARRENDAMIENTO"
+                    ' cSubProduct = "PURO"
+                    cProduct = "2"
+                Case "R"
+                    'cProduct = "CREDITO"
+                    'cSubProduct = "REFACCIONARIO"
+                    cProduct = "8"
+                Case "S"
+                    ' cProduct = "CREDITO"
+                    ' cSubProduct = "SIMPLE"
+                    If drAnexo("LiquidezInmediata") = True Then
+                        cProduct = "11"
+                    Else
+                        cProduct = "3"
+                    End If
+            End Select
+
             nInsMon = InstrumentoMonetario(cCheque, r.EsEfectivo, r.MINDS)
             nSaldo = Avio.ScalarSaldo(r.Anexo, r.Fecha)
             cFechafin = r.FechaTerminacion
@@ -1006,7 +1145,7 @@ Public Class FrmMINDS
             'x = Pagos.Existe(cDoc)
             If nPago > 0 Then
                 Try
-                    Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, r.Promo, cSucursal, cFechafin, nSaldo, 0)
+                    Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, r.Promo, cSucursal, cFechafin, nSaldo, 0, cProduct)
                     Contador += 1
                 Catch ex As Exception
 
