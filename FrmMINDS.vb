@@ -8,7 +8,7 @@ Public Class FrmMINDS
     Inherits System.Windows.Forms.Form
     Dim dtReporte As New DataTable("Reporte")
     Dim dtDetalle As New DataTable("Final")
-    Dim strConn As String = "Server=SERVER-RAID; DataBase=production; User ID=User_pro; pwd=User_PRO2015"
+    Dim strConn As String = "Server=SERVER-RAID2; DataBase=production; User ID=User_pro; pwd=User_PRO2015"
     Dim fecha As Date = "19/09/2017" 'Date.Now.ToShortDateString julio fue el ULTIMO
     Dim fechaLim As Date = "19/09/2017"
     Dim Contador As Integer = 0
