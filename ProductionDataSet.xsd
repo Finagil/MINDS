@@ -2343,13 +2343,7 @@ ORDER BY Anexo, Ciclo, Cliente</CommandText>
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="FechaTerminacion" msprop:Generator_ColumnVarNameInTable="columnFechaTerminacion" msprop:Generator_ColumnPropNameInRow="FechaTerminacion" msprop:Generator_ColumnPropNameInTable="FechaTerminacionColumn" msprop:Generator_UserColumnName="FechaTerminacion" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="8" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
+              <xs:element name="FechaTerminacion" msprop:Generator_ColumnVarNameInTable="columnFechaTerminacion" msprop:Generator_ColumnPropNameInRow="FechaTerminacion" msprop:Generator_ColumnPropNameInTable="FechaTerminacionColumn" msprop:Generator_UserColumnName="FechaTerminacion" type="xs:dateTime" />
               <xs:element name="EsEfectivo" msprop:Generator_ColumnVarNameInTable="columnEsEfectivo" msprop:Generator_ColumnPropNameInRow="EsEfectivo" msprop:Generator_ColumnPropNameInTable="EsEfectivoColumn" msprop:Generator_UserColumnName="EsEfectivo" type="xs:boolean" minOccurs="0" />
               <xs:element name="MINDS" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnMINDS" msprop:Generator_ColumnPropNameInRow="MINDS" msprop:Generator_ColumnPropNameInTable="MINDSColumn" msprop:Generator_UserColumnName="MINDS" type="xs:int" minOccurs="0" />
             </xs:sequence>
@@ -2371,6 +2365,7 @@ ORDER BY Anexo, Ciclo, Cliente</CommandText>
       <xs:field xpath="mstns:Letra" />
       <xs:field xpath="mstns:Cheque" />
       <xs:field xpath="mstns:Cliente" />
+      <xs:field xpath="mstns:FechaTerminacion" />
     </xs:unique>
   </xs:element>
 </xs:schema>

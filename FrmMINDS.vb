@@ -633,7 +633,7 @@ Public Class FrmMINDS
         'dsAgil.Tables("Pagos").Clear()
         With cm1
             .CommandType = CommandType.Text
-            .CommandText = "SELECT Fecha, Anexo,Letra, Importe, Cheque, Promo, Cliente, Sucursal, Tipar, EsEfectivo, Banco, minds, LiquidezInmediata " _
+            .CommandText = "SELECT Fecha, Anexo,Letra, Importe, Cheque, Promo, Cliente, Sucursal, Tipar, EsEfectivo, Banco, minds, LiquidezInmediata, Feven " _
              & " FROM Minds_Pagos where fecha between '" & fecha.ToString("yyyyMMdd") & "' and '" & fechaLim.ToString("yyyyMMdd") _
              & "' and anexo <> 'X038790001' order by Fecha, Anexo"
             .Connection = cnAgil
@@ -729,7 +729,7 @@ Public Class FrmMINDS
 
             If nPago <> 0 Then
                 Try
-                    Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0, cProduct)
+                    Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0, cProduct, drAnexo("Feven"))
                     Contador += 1
                 Catch ex As Exception
                     MessageBox.Show(ex.Message & " " & cDoc, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -800,7 +800,7 @@ Public Class FrmMINDS
                 x = Pagos.Existe(cDoc)
                 If x = 0 Then
                     Try
-                        Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0, cProduct)
+                        Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0, cProduct, drAnexo("Feven"))
                         Contador += 1
                     Catch ex As Exception
 
@@ -892,7 +892,7 @@ Public Class FrmMINDS
                 x = Pagos.Existe(cDoc)
                 If x = 0 Then
                     Try
-                        Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0, cProduct)
+                        Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0, cProduct, drAnexo("Feven"))
                         Contador += 1
                     Catch ex As Exception
 
@@ -1007,7 +1007,7 @@ Public Class FrmMINDS
                 x = Pagos.Existe(cDoc)
                 If x = 0 Then
                     Try
-                        Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0, cProduct)
+                        Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0, cProduct, drAnexo("Feven"))
                         Contador += 1
                     Catch ex As Exception
 
@@ -1080,7 +1080,7 @@ Public Class FrmMINDS
                     x = Pagos.Existe(cDoc)
                     If x = 0 Then
                         Try
-                            Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0, cProduct)
+                            Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0, cProduct, drAnexo("Feven"))
                             Contador += 1
                         Catch ex As Exception
 
@@ -1145,7 +1145,7 @@ Public Class FrmMINDS
             'x = Pagos.Existe(cDoc)
             If nPago > 0 Then
                 Try
-                    Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, r.Promo, cSucursal, cFechafin, nSaldo, 0, cProduct)
+                    Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, r.Promo, cSucursal, cFechafin, nSaldo, 0, cProduct, r.FechaTerminacion)
                     Contador += 1
                 Catch ex As Exception
 

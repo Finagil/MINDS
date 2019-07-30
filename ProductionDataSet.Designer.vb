@@ -6319,7 +6319,7 @@ Partial Public Class ProductionDataSet
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
-        Public Overloads Function AddMinds_Pagos_AvioRow(ByVal Fecha As String, ByVal Anexo As String, ByVal Letra As String, ByVal Importe As Decimal, ByVal Cheque As String, ByVal Promo As String, ByVal Cliente As String, ByVal Sucursal As String, ByVal Tipar As String, ByVal FechaTerminacion As String, ByVal EsEfectivo As Boolean, ByVal MINDS As Integer) As Minds_Pagos_AvioRow
+        Public Overloads Function AddMinds_Pagos_AvioRow(ByVal Fecha As String, ByVal Anexo As String, ByVal Letra As String, ByVal Importe As Decimal, ByVal Cheque As String, ByVal Promo As String, ByVal Cliente As String, ByVal Sucursal As String, ByVal Tipar As String, ByVal FechaTerminacion As Date, ByVal EsEfectivo As Boolean, ByVal MINDS As Integer) As Minds_Pagos_AvioRow
             Dim rowMinds_Pagos_AvioRow As Minds_Pagos_AvioRow = CType(Me.NewRow,Minds_Pagos_AvioRow)
             Dim columnValuesArray() As Object = New Object() {Fecha, Anexo, Letra, Importe, Cheque, Promo, Cliente, Sucursal, Tipar, FechaTerminacion, EsEfectivo, MINDS}
             rowMinds_Pagos_AvioRow.ItemArray = columnValuesArray
@@ -6329,8 +6329,8 @@ Partial Public Class ProductionDataSet
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
-        Public Function FindByAnexoLetraChequeCliente(ByVal Anexo As String, ByVal Letra As String, ByVal Cheque As String, ByVal Cliente As String) As Minds_Pagos_AvioRow
-            Return CType(Me.Rows.Find(New Object() {Anexo, Letra, Cheque, Cliente}),Minds_Pagos_AvioRow)
+        Public Function FindByAnexoLetraChequeClienteFechaTerminacion(ByVal Anexo As String, ByVal Letra As String, ByVal Cheque As String, ByVal Cliente As String, ByVal FechaTerminacion As Date) As Minds_Pagos_AvioRow
+            Return CType(Me.Rows.Find(New Object() {Anexo, Letra, Cheque, Cliente, FechaTerminacion}),Minds_Pagos_AvioRow)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -6391,13 +6391,13 @@ Partial Public Class ProductionDataSet
             MyBase.Columns.Add(Me.columnSucursal)
             Me.columnTipar = New Global.System.Data.DataColumn("Tipar", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnTipar)
-            Me.columnFechaTerminacion = New Global.System.Data.DataColumn("FechaTerminacion", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            Me.columnFechaTerminacion = New Global.System.Data.DataColumn("FechaTerminacion", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnFechaTerminacion)
             Me.columnEsEfectivo = New Global.System.Data.DataColumn("EsEfectivo", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnEsEfectivo)
             Me.columnMINDS = New Global.System.Data.DataColumn("MINDS", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnMINDS)
-            Me.Constraints.Add(New Global.System.Data.UniqueConstraint("Constraint1", New Global.System.Data.DataColumn() {Me.columnAnexo, Me.columnLetra, Me.columnCheque, Me.columnCliente}, true))
+            Me.Constraints.Add(New Global.System.Data.UniqueConstraint("Constraint1", New Global.System.Data.DataColumn() {Me.columnAnexo, Me.columnLetra, Me.columnCheque, Me.columnCliente, Me.columnFechaTerminacion}, true))
             Me.columnFecha.MaxLength = 8
             Me.columnAnexo.AllowDBNull = false
             Me.columnAnexo.MaxLength = 9
@@ -6412,7 +6412,7 @@ Partial Public Class ProductionDataSet
             Me.columnSucursal.MaxLength = 2
             Me.columnTipar.AllowDBNull = false
             Me.columnTipar.MaxLength = 1
-            Me.columnFechaTerminacion.MaxLength = 8
+            Me.columnFechaTerminacion.AllowDBNull = false
             Me.columnMINDS.ReadOnly = true
         End Sub
         
@@ -10162,14 +10162,9 @@ Partial Public Class ProductionDataSet
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
-        Public Property FechaTerminacion() As String
+        Public Property FechaTerminacion() As Date
             Get
-                Try 
-                    Return CType(Me(Me.tableMinds_Pagos_Avio.FechaTerminacionColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("El valor de la columna 'FechaTerminacion' de la tabla 'Minds_Pagos_Avio' es DBNul"& _ 
-                            "l.", e)
-                End Try
+                Return CType(Me(Me.tableMinds_Pagos_Avio.FechaTerminacionColumn),Date)
             End Get
             Set
                 Me(Me.tableMinds_Pagos_Avio.FechaTerminacionColumn) = value
@@ -10240,18 +10235,6 @@ Partial Public Class ProductionDataSet
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
         Public Sub SetSucursalNull()
             Me(Me.tableMinds_Pagos_Avio.SucursalColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
-        Public Function IsFechaTerminacionNull() As Boolean
-            Return Me.IsNull(Me.tableMinds_Pagos_Avio.FechaTerminacionColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
-        Public Sub SetFechaTerminacionNull()
-            Me(Me.tableMinds_Pagos_Avio.FechaTerminacionColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
