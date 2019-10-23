@@ -599,7 +599,7 @@ Public Class FrmMINDS
         Dim cnAgil As New SqlConnection(strConn)
         Dim cm1 As New SqlCommand()
         Dim drAnexo As DataRow
-
+        Dim FechaNulo As Nullable(Of DateTime)
         Dim cDia As String
         Dim i As Integer
         Dim cAnexo As String
@@ -729,7 +729,12 @@ Public Class FrmMINDS
 
             If nPago <> 0 Then
                 Try
-                    Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0, cProduct, drAnexo("Feven"))
+                    If IsDBNull(drAnexo("Feven")) Then
+                        Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0, cProduct, FechaNulo)
+                    Else
+                        Pagos.Insert(cDoc, cAnexo, nOper, nInsMon, 1, cFecha, nPago, nPago, drAnexo("promo"), cSucursal, cFechafin, nSaldo, 0, cProduct, drAnexo("Feven"))
+                    End If
+
                     Contador += 1
                 Catch ex As Exception
                     MessageBox.Show(ex.Message & " " & cDoc, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
