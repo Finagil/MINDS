@@ -15,215 +15,6 @@ Public Class FrmMINDS
     Dim Pagos As New Minds2DSTableAdapters.layoutsCreditoTableAdapter
 
 
-    Private Sub btnLCtos_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLCtos.Click
-        Dim Con1 As New ProductionDataSetTableAdapters.AnexosTableAdapter
-        Dim Con2 As New ProductionDataSetTableAdapters.AviosTableAdapter
-        Dim dsAgil As New DataSet()
-        Dim Pagos As New Minds2DSTableAdapters.layoutsCreditoTableAdapter
-        'Pagos.DeleteAll()
-        Dim Cuentas As New Minds2DSTableAdapters.layoutsCuentaTableAdapter
-        'Cuentas.DeleteAll()
-        Dim cnAgil As New SqlConnection(strConn)
-        Dim cm1 As New SqlCommand()
-        Dim cm3 As New SqlCommand()
-        Dim cm4 As New SqlCommand()
-        Dim drAnexo As DataRow
-        Dim drEdoctav As DataRow()
-        Dim drDato As DataRow
-
-        Dim cDia As String
-        Dim i As Integer
-        Dim cRenglon As String
-        Dim cImporte As String
-        Dim cAnexo As String
-        Dim cCiclo As String
-        Dim cCliente As String
-        Dim cFecha As String
-        Dim cFechafin As String
-        Dim cPago As String
-        Dim nCount As Integer
-        Dim nPago As Decimal
-        Dim cProduct As String
-        Dim cSubProduct As String
-        Dim cSucursal As String
-
-
-        Dim cm2 As New SqlCommand()
-        Dim dsReporte As New DataSet()
-        Dim daAnexos As New SqlDataAdapter(cm1)
-        Dim daEdoctav As New SqlDataAdapter(cm2)
-        Dim daAvios As New SqlDataAdapter(cm3)
-        Dim daCuentasConcetradoras As New SqlDataAdapter(cm4)
-        Dim relAnexoEdoctav As DataRelation
-
-
-        cDia = Mid(DTOC(Today), 7, 2) & Mid(DTOC(Today), 5, 2)
-        cFecha = DTOC(Today)
-        cnAgil.Open()
-
-        With cm1
-            .CommandType = CommandType.Text
-            .CommandText = "SELECT cliente, Anexo, Fechacon, Mensu, MtoFin, Tipar, Sucursal FROM Minds_Cuentas "
-            .Connection = cnAgil
-        End With
-
-        With cm3
-            .CommandType = CommandType.Text
-            .CommandText = "SELECT * FROM Minds_CuentasAvio"
-            '.CommandText = "SELECT Clientes.cliente, Anexo + '-' + ciclo as Anexo, Fechaautorizacion, LineaActual, FechaTerminacion, Tipar FROM Clientes " & _
-            '               "INNER JOIN Avios On Avios.Cliente = Clientes.Cliente WHERE Flcan = 'A' and fechaTerminacion >= '20130101' and (minds = 0 or minds is null)"
-            .Connection = cnAgil
-        End With
-
-        With cm4
-            .CommandType = CommandType.Text
-            .CommandText = "SELECT * FROM Minds_CuentasConcetradoras"
-            .Connection = cnAgil
-        End With
-
-        ' Este Stored Procedure trae la tabla de amortización del equipo de todos los contratos activos
-        ' con fecha de contratación menor o igual a la de proceso
-
-        With cm2
-            .CommandType = CommandType.Text
-            .CommandText = "SELECT * FROM Edoctav Order By Anexo, Letra Desc"
-            .Connection = cnAgil
-        End With
-        daAnexos.Fill(dsAgil, "Anexos")
-        daEdoctav.Fill(dsAgil, "Edoctav")
-        daAvios.Fill(dsAgil, "Avios")
-        daCuentasConcetradoras.Fill(dsAgil, "Cuentas")
-
-        'CONCETRADORAS+++++++++++++++++++++++++++++++++++++
-        For Each drAnexo In dsAgil.Tables("Cuentas").Rows
-            cAnexo = drAnexo("Anexo")
-            cCliente = drAnexo("Cliente")
-            cSucursal = drAnexo("Mensu").ToString
-            cImporte = drAnexo("MtoFin").ToString
-            cFecha = CTOD(drAnexo("Fechacon")).ToShortDateString
-
-            'nCount = 0
-            ' cProduct = "CREDITO"
-            ' cSubProduct = "SIMPLE"
-            cProduct = "3"
-
-            cFechafin = "01/01/2030"
-            cPago = 1
-
-            If Cuentas.Existe(cAnexo).Value = 0 Then
-                Cuentas.Insert(cAnexo, cCliente, 7, cProduct, cImporte, cFecha, cFechafin, 1, cPago)
-            End If
-
-            Label2.Text = "Procesando Contrato " & cAnexo
-            Label2.Update()
-
-        Next
-        'CONCETRADORAS+++++++++++++++++++++++++++++++++++++
-
-        ' Establecer la relación entre Anexos y Edoctav
-
-        relAnexoEdoctav = New DataRelation("AnexoEdoctav", dsAgil.Tables("Anexos").Columns("Anexo"), dsAgil.Tables("Edoctav").Columns("Anexo"))
-        dsAgil.EnforceConstraints = False
-        dsAgil.Relations.Add(relAnexoEdoctav)
-
-        For Each drAnexo In dsAgil.Tables("Anexos").Rows
-            cAnexo = drAnexo("Anexo")
-            cCliente = drAnexo("Cliente")
-            cSucursal = drAnexo("Mensu").ToString
-            cImporte = drAnexo("MtoFin").ToString
-            cFecha = CTOD(drAnexo("Fechacon")).ToShortDateString
-            drEdoctav = drAnexo.GetChildRows("AnexoEdoctav")
-            Select Case drAnexo("Tipar")
-                Case "F"
-                    '    cProduct = "ARRENDAMIENTO"
-                    '   cSubProduct = "FINANCIERO"
-                    cProduct = "1"
-                Case "P"
-                    ' cProduct = "ARRENDAMIENTO"
-                    ' cSubProduct = "PURO"
-                    cProduct = "2"
-                Case "R"
-                    'cProduct = "CREDITO"
-                    'cSubProduct = "REFACCIONARIO"
-                    cProduct = "8"
-                Case "S"
-                    ' cProduct = "CREDITO"
-                    ' cSubProduct = "SIMPLE"
-                    cProduct = "3"
-            End Select
-            nCount = 0
-
-
-            For Each drDato In drEdoctav
-                If nCount = 0 Then
-                    cFechafin = CTOD(drDato("Feven")).ToShortDateString
-                    nPago = drDato("Abcap") + drDato("Inter")
-                    cPago = nPago.ToString
-                    nCount += 1
-                End If
-            Next
-
-            cRenglon = cAnexo & "|" & cCliente & "|" & cProduct & "|" & cImporte & "|" & cFecha & "|" & cFechafin & "|1|" & cPago & "|" & cSucursal & "|"
-            If Cuentas.Existe(cAnexo).Value = 0 Then
-                Cuentas.Insert(cAnexo, cCliente, 7, cProduct, cImporte, cFecha, cFechafin, 1, cPago)
-            Else
-                'Cuentas.UpdateCuenta(cCliente, 7, cProduct, cImporte, cFecha, cFechafin, 1, cPago, cAnexo)
-            End If
-
-            'Con1.UpdateMinds(cAnexo)
-            'stmWriter.WriteLine(cRenglon)
-            Label2.Text = "Procesando Contrato " & cAnexo
-            Label2.Update()
-
-        Next
-
-
-
-        For Each drAnexo In dsAgil.Tables("Avios").Rows
-            If "081640011" = drAnexo("Anexo") Then
-                cAnexo = drAnexo("Anexo")
-            End If
-            cAnexo = drAnexo("Anexo")
-            cCliente = drAnexo("Cliente")
-            cImporte = drAnexo("LineaActual").ToString
-            cFecha = CTOD(drAnexo("FechaAutorizacion")).ToShortDateString
-            Select Case drAnexo("Tipar")
-                Case "A"
-                    ' cProduct = "CREDITO"
-                    'cSubProduct = "ANTICIPO DE AVIO"
-                    cProduct = "114" ' como simple
-
-                Case "C"
-                    '   cProduct = "CREDITO"
-                    '   cSubProduct = "CUENTA CORRIENTE"
-                    cProduct = "4"
-                Case "H"
-                    ' cProduct = "CREDITO"
-                    ' cSubProduct = "AVIO"
-                    cProduct = "9"
-            End Select
-            cFechafin = CTOD(drAnexo("FechaTerminacion")).ToShortDateString
-            nPago = drAnexo("LineaActual")
-            cPago = nPago.ToString
-            Label2.Text = "Procesando Contrato " & cAnexo & " de AVIO"
-            Label2.Update()
-            If drAnexo("Tipar") <> "A" Then
-                If Cuentas.Existe(cAnexo).Value = 0 Then
-                    Cuentas.Insert(cAnexo, cCliente, 7, cProduct, cImporte, cFecha, cFechafin, 1, cPago)
-                Else
-                    Cuentas.UpdateCuenta(cCliente, 7, cProduct, cImporte, cFecha, cFechafin, 1, cPago, cAnexo)
-                End If
-
-                cAnexo = Mid(cAnexo, 1, 9)
-                cCiclo = Mid(cAnexo, 11, 2)
-                Con2.UpdateMinds(cCiclo, cAnexo)
-            End If
-        Next
-        cnAgil.Close()
-        MsgBox("Proceso Terminado", MsgBoxStyle.Information, "Mensaje")
-
-    End Sub
-
     Private Sub btnPagos_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPagos.Click
         Cursor.Current = Cursors.WaitCursor
         fecha = dtpProcesar1.Value.ToShortDateString
@@ -231,6 +22,7 @@ Public Class FrmMINDS
         Contador = 0
 
         Dim x As Integer = Pagos.DeleteFecha(fecha)
+        Call Carga_Cuentas(fecha)
         Call Pagos_Tradicionales()
         Call Pagos_Avio()
         Cursor.Current = Cursors.Default
@@ -635,7 +427,7 @@ Public Class FrmMINDS
             .CommandType = CommandType.Text
             .CommandText = "SELECT Fecha, Anexo,Letra, Importe, Cheque, Promo, Cliente, Sucursal, Tipar, EsEfectivo, Banco, minds, LiquidezInmediata, Feven " _
              & " FROM Minds_Pagos where fecha between '" & fecha.ToString("yyyyMMdd") & "' and '" & fechaLim.ToString("yyyyMMdd") _
-             & "' and anexo <> 'X038790001' order by Fecha, Anexo"
+             & "' and anexo <> '00041720003' order by Fecha, Anexo"
             .Connection = cnAgil
         End With
 
@@ -664,10 +456,10 @@ Public Class FrmMINDS
                     'cProduct = "CREDITO"
                     'cSubProduct = "REFACCIONARIO"
                     cProduct = "8"
-                Case "S"
+                Case "S", "L"
                     ' cProduct = "CREDITO"
                     ' cSubProduct = "SIMPLE"
-                    If drAnexo("LiquidezInmediata") = True Then
+                    If drAnexo("LiquidezInmediata") = True Or drAnexo("Tipar") = "L" Then
                         cProduct = "11"
                     Else
                         cProduct = "3"
@@ -718,13 +510,13 @@ Public Class FrmMINDS
             cDoc = cCheque.Trim & "-" & cAnexo & "-" & drAnexo("Letra")
 
             If drAnexo("letra") = "888" Or drAnexo("letra") = "999" Then
-                'cDoc = Trim(drAnexo("Serie")) & Trim(drAnexo("Numero")) & "-" & cCheque.Trim & "-" & drAnexo("Anexo")
-                cDoc = cCheque.Trim & "-" & drAnexo("Anexo")
-                If cDoc.Length >= 28 Then
-                    cDoc = cDoc.Substring(0, 28) & CInt(Math.Ceiling(Rnd() * 9)) + 1
-                Else
-                    cDoc = cDoc.Substring(0, cDoc.Length) & CInt(Math.Ceiling(Rnd() * 9)) + 1
-                End If
+                cDoc = drAnexo("Anexo") & "-" & Trim(drAnexo("Letra")) & "-" & cCheque.Trim & "-" & drAnexo(0) & "-" & drAnexo(3)
+                'cDoc = cCheque.Trim & "-" & drAnexo("Anexo")
+                'If cDoc.Length >= 28 Then
+                '    cDoc = cDoc.Substring(0, 28) & CInt(Math.Ceiling(Rnd() * 9)) + 1
+                'Else
+                '    cDoc = cDoc.Substring(0, cDoc.Length) & CInt(Math.Ceiling(Rnd() * 9)) + 1
+                'End If
             End If
 
             If nPago <> 0 Then
@@ -1102,6 +894,9 @@ Public Class FrmMINDS
         Dim cCiclo As String = ""
         Avio.Fill(TAvio, fecha.ToString("yyyyMMdd"), fechaLim.ToString("yyyyMMdd"))
         For Each r As ProductionDataSet.Minds_Pagos_AvioRow In TAvio.Rows
+            If r.Anexo <> "032810008" Then
+                'Continue For
+            End If
             cAnexo = r.Anexo
             cCliente = r.Cliente
             cSucursal = r.Sucursal
@@ -1122,14 +917,10 @@ Public Class FrmMINDS
                     'cProduct = "CREDITO"
                     'cSubProduct = "REFACCIONARIO"
                     cProduct = "8"
-                Case "S"
+                Case "S", "H", "C"
                     ' cProduct = "CREDITO"
                     ' cSubProduct = "SIMPLE"
-                    If drAnexo("LiquidezInmediata") = True Then
-                        cProduct = "11"
-                    Else
-                        cProduct = "3"
-                    End If
+                    cProduct = "3"
             End Select
 
             nInsMon = InstrumentoMonetario(cCheque, r.EsEfectivo, r.MINDS)
@@ -1146,7 +937,7 @@ Public Class FrmMINDS
             '    cDoc = Trim(r.Serie) & "-" & Trim(r.Numero) & "-" & Trim(r.Anexo) & Trim(r.Tipar)
             'End If
             'cDoc = Trim(r.Serie) & Trim(r.Numero) & "-" & cCheque
-            cDoc = cCheque.Trim & "-" & cAnexo
+            cDoc = cCheque.Trim & "-" & cAnexo & r.Letra
             'x = Pagos.Existe(cDoc)
             If nPago > 0 Then
                 Try
@@ -1194,4 +985,192 @@ Public Class FrmMINDS
 
 
     End Function
+
+    Sub Carga_Cuentas(Fec_Mesual As Date)
+        Dim Con1 As New ProductionDataSetTableAdapters.AnexosTableAdapter
+        Dim Con2 As New ProductionDataSetTableAdapters.AviosTableAdapter
+        Dim dsAgil As New DataSet()
+        Dim Pagos As New Minds2DSTableAdapters.layoutsCreditoTableAdapter
+        Dim Cuentas As New Minds2DSTableAdapters.layoutsCuentaTableAdapter
+        Dim cnAgil As New SqlConnection(strConn)
+        Dim cm1 As New SqlCommand()
+        Dim cm3 As New SqlCommand()
+        Dim cm4 As New SqlCommand()
+        Dim drAnexo As DataRow
+        Dim drEdoctav As DataRow()
+        Dim drDato As DataRow
+
+        Dim cDia As String
+        Dim i As Integer
+        Dim cMes As String = Fec_Mesual.ToString("yyyyMM") & "%"
+        Dim cImporte As String
+        Dim cAnexo As String
+        Dim cCiclo As String
+        Dim cCliente As String
+        Dim cFecha As String
+        Dim nCount As Integer
+        Dim nPago As Decimal
+        Dim cProduct As String
+        Dim cSucursal As String
+        Dim ID_Frecuencia As Integer
+
+        Dim dsReporte As New DataSet()
+        Dim daAnexos As New SqlDataAdapter(cm1)
+        Dim daAvios As New SqlDataAdapter(cm3)
+        Dim daCuentasConcetradoras As New SqlDataAdapter(cm4)
+        Dim relAnexoEdoctav As DataRelation
+
+        Try
+
+
+            cDia = Mid(DTOC(Today), 7, 2) & Mid(DTOC(Today), 5, 2)
+            cFecha = DTOC(Today)
+            cnAgil.Open()
+
+            With cm1
+                .CommandType = CommandType.Text
+                .CommandText = "SELECT * FROM Minds_Cuentas "
+                .Connection = cnAgil
+            End With
+
+            With cm3
+                .CommandType = CommandType.Text
+                .CommandText = "SELECT * FROM Minds_CuentasAvio"
+                .Connection = cnAgil
+            End With
+
+            With cm4
+                .CommandType = CommandType.Text
+                .CommandText = "SELECT * FROM Minds_CuentasConcetradoras where Anexo = 'XX'"
+                .Connection = cnAgil
+            End With
+
+            ' Este Stored Procedure trae la tabla de amortización del equipo de todos los contratos activos
+            ' con fecha de contratación menor o igual a la de proceso
+
+            daAnexos.Fill(dsAgil, "Anexos")
+            daAvios.Fill(dsAgil, "Avios")
+
+            'relAnexoEdoctav = New DataRelation("AnexoEdoctav", dsAgil.Tables("Anexos").Columns("Anexo"), dsAgil.Tables("Edoctav").Columns("Anexo"))
+            'dsAgil.EnforceConstraints = False
+            'dsAgil.Relations.Add(relAnexoEdoctav)
+
+            For Each drAnexo In dsAgil.Tables("Anexos").Rows
+                cAnexo = drAnexo("Anexo")
+                'nPago = CDec(drAnexo("PLD_MontoMensul") * 3) ' solicitado por KArla Sanchez 31/05/2019
+                nPago = (Con1.PagoMensual(cAnexo, cMes) * 3) ' solicitado por KArla Sanchez 13/04/2020
+                cCliente = drAnexo("Cliente")
+                cSucursal = drAnexo("Mensu").ToString
+                cImporte = drAnexo("MtoFin").ToString
+                cFecha = CTOD(drAnexo("Fechacon")).ToShortDateString
+                drEdoctav = drAnexo.GetChildRows("AnexoEdoctav")
+                Select Case UCase(drAnexo("Vencimiento"))
+                    Case "SEMANAL"
+                        ID_Frecuencia = 1
+                    Case "CATORCENAL"
+                        ID_Frecuencia = 2
+                    Case "QUINCENAL"
+                        ID_Frecuencia = 3
+                    Case "MENSUAL"
+                        ID_Frecuencia = 4
+                    Case "BIMESTRAL"
+                        ID_Frecuencia = 5
+                    Case "TRIMESTRAL", "TRIMESTRE"
+                        ID_Frecuencia = 6
+                    Case "SEMESTRAL"
+                        ID_Frecuencia = 7
+                    Case "ANUAL"
+                        ID_Frecuencia = 8
+                End Select
+                Select Case drAnexo("Tipar")
+                    Case "F"
+                        cProduct = "1"
+                    Case "P"
+                        cProduct = "2"
+                    Case "R"
+                        cProduct = "8"
+                    Case "L"
+                        cProduct = "11"
+                    Case "B"
+                        cProduct = "12"
+                    Case "S"
+                        If drAnexo("LiquidezInmediata") = True Then
+                            cProduct = "11"
+                        Else
+                            cProduct = "3"
+                        End If
+                End Select
+                nCount = 0
+                Try
+                    If Cuentas.Existe(cAnexo).Value = 0 Then
+                        Cuentas.Insert(cAnexo, cCliente, 7, cProduct, cImporte, cFecha, drAnexo("Feven"), 1, nPago.ToString, 1, ID_Frecuencia)
+                    Else
+                        Cuentas.UpdateCuenta(cCliente, 7, cProduct, cImporte, cFecha, drAnexo("Feven"), 1, nPago.ToString, 1, ID_Frecuencia, cAnexo)
+                        Cuentas.UpdateMensualidad(nPago.ToString, cProduct, cAnexo)
+                    End If
+                Catch ex As Exception
+                    EnviacORREO("ecacerest@lamoderna.com.mx,viapolo@lamoderna.com.mx", ex.Message & "  " & cAnexo, "error en CUENTAS", "Minds@finagil.com.mx")
+                End Try
+            Next
+
+            For Each drAnexo In dsAgil.Tables("Avios").Rows
+                If "081640011" = drAnexo("Anexo") Then
+                    cAnexo = drAnexo("Anexo")
+                End If
+                cAnexo = drAnexo("Anexo")
+                cCliente = drAnexo("Cliente")
+                cImporte = drAnexo("LineaActual").ToString
+                cFecha = CTOD(drAnexo("FechaAutorizacion")).ToShortDateString
+                Select Case drAnexo("Tipar")
+                    Case "A"
+                        cProduct = "3" ' como simple
+                    Case "C"
+                        cProduct = "4"
+                    Case "H"
+                        cProduct = "9"
+                End Select
+
+                Select Case UCase(drAnexo("Vencimiento"))
+                    Case "SEMANAL"
+                        ID_Frecuencia = 1
+                    Case "CATORCENAL"
+                        ID_Frecuencia = 2
+                    Case "QUINCENAL"
+                        ID_Frecuencia = 3
+                    Case "MENSUAL"
+                        ID_Frecuencia = 4
+                    Case "BIMESTRAL"
+                        ID_Frecuencia = 5
+                    Case "TRIMESTRAL", "TRIMESTRE"
+                        ID_Frecuencia = 6
+                    Case "SEMESTRAL"
+                        ID_Frecuencia = 7
+                    Case "ANUAL"
+                        ID_Frecuencia = 8
+                End Select
+
+                nPago = drAnexo("PLD_MontoMensual") * 3 ' solicitado por KArla Sanchez 31/05/2019
+                nPago = drAnexo("LineaActual") * 3 ' solicitado por KArla Sanchez 13/04/2020
+                If drAnexo("Tipar") <> "AA" Then
+                    If Cuentas.Existe(cAnexo).Value = 0 Then
+                        Cuentas.Insert(cAnexo, cCliente, 7, cProduct, cImporte, cFecha, drAnexo("Feven"), 1, nPago.ToString, 1, ID_Frecuencia)
+                    Else
+                        Cuentas.UpdateCuenta(cCliente, 7, cProduct, cImporte, cFecha, drAnexo("Feven"), 1, nPago.ToString, 1, ID_Frecuencia, cAnexo)
+                    End If
+                    cAnexo = Mid(cAnexo, 1, 9)
+                    cCiclo = Mid(cAnexo, 11, 2)
+                    Con2.UpdateMinds(cCiclo, cAnexo)
+                End If
+            Next
+        Catch ex As Exception
+            EnviacORREO("ecacerest@lamoderna.com.mx,viapolo@lamoderna.com.mx", ex.Message & "  " & cAnexo, "error en CUENTAS", "Minds@finagil.com.mx")
+        End Try
+        cnAgil.Close()
+    End Sub
+
+    Public Sub EnviacORREO(ByVal Para As String, ByVal Mensaje As String, ByVal Asunto As String, de As String, Optional Archivo As String = "")
+        Dim taCorreos As New ProductionDataSetTableAdapters.GEN_Correos_SistemaFinagilTableAdapter
+        taCorreos.Insert(de, Para, Asunto, Mensaje, False, Date.Now, Archivo)
+        taCorreos.Dispose()
+    End Sub
 End Class

@@ -2674,6 +2674,10 @@ Partial Public Class Minds2DS
         
         Private columnMontoMensual As Global.System.Data.DataColumn
         
+        Private columnActiva As Global.System.Data.DataColumn
+        
+        Private columnIdFrecuencia As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
         Public Sub New()
@@ -2782,6 +2786,22 @@ Partial Public Class Minds2DS
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public ReadOnly Property ActivaColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnActiva
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public ReadOnly Property IdFrecuenciaColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnIdFrecuencia
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -2818,9 +2838,9 @@ Partial Public Class Minds2DS
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
-        Public Overloads Function AddlayoutsCuentaRow(ByVal No_Cuenta As String, ByVal parentlayoutsKYCRowByFK_layoutsCuenta_layoutsKYC As layoutsKYCRow, ByVal IdProducto As Integer, ByVal IdSubproducto As Integer, ByVal ImporteCredito As String, ByVal FechaApertura As Date, ByVal FechaVencimiento As Date, ByVal IdMoneda As Integer, ByVal MontoMensual As Decimal) As layoutsCuentaRow
+        Public Overloads Function AddlayoutsCuentaRow(ByVal No_Cuenta As String, ByVal parentlayoutsKYCRowByFK_layoutsCuenta_layoutsKYC As layoutsKYCRow, ByVal IdProducto As Integer, ByVal IdSubproducto As Integer, ByVal ImporteCredito As String, ByVal FechaApertura As Date, ByVal FechaVencimiento As Date, ByVal IdMoneda As Integer, ByVal MontoMensual As Decimal, ByVal Activa As Boolean, ByVal IdFrecuencia As Integer) As layoutsCuentaRow
             Dim rowlayoutsCuentaRow As layoutsCuentaRow = CType(Me.NewRow,layoutsCuentaRow)
-            Dim columnValuesArray() As Object = New Object() {No_Cuenta, Nothing, IdProducto, IdSubproducto, ImporteCredito, FechaApertura, FechaVencimiento, IdMoneda, MontoMensual}
+            Dim columnValuesArray() As Object = New Object() {No_Cuenta, Nothing, IdProducto, IdSubproducto, ImporteCredito, FechaApertura, FechaVencimiento, IdMoneda, MontoMensual, Activa, IdFrecuencia}
             If (Not (parentlayoutsKYCRowByFK_layoutsCuenta_layoutsKYC) Is Nothing) Then
                 columnValuesArray(1) = parentlayoutsKYCRowByFK_layoutsCuenta_layoutsKYC(0)
             End If
@@ -2867,6 +2887,8 @@ Partial Public Class Minds2DS
             Me.columnFechaVencimiento = MyBase.Columns("FechaVencimiento")
             Me.columnIdMoneda = MyBase.Columns("IdMoneda")
             Me.columnMontoMensual = MyBase.Columns("MontoMensual")
+            Me.columnActiva = MyBase.Columns("Activa")
+            Me.columnIdFrecuencia = MyBase.Columns("IdFrecuencia")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -2890,6 +2912,10 @@ Partial Public Class Minds2DS
             MyBase.Columns.Add(Me.columnIdMoneda)
             Me.columnMontoMensual = New Global.System.Data.DataColumn("MontoMensual", GetType(Decimal), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnMontoMensual)
+            Me.columnActiva = New Global.System.Data.DataColumn("Activa", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnActiva)
+            Me.columnIdFrecuencia = New Global.System.Data.DataColumn("IdFrecuencia", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnIdFrecuencia)
             Me.Constraints.Add(New Global.System.Data.UniqueConstraint("Constraint1", New Global.System.Data.DataColumn() {Me.columnNo_Cuenta}, true))
             Me.columnNo_Cuenta.AllowDBNull = false
             Me.columnNo_Cuenta.Unique = true
@@ -5493,6 +5519,36 @@ Partial Public Class Minds2DS
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Property Activa() As Boolean
+            Get
+                Try 
+                    Return CType(Me(Me.tablelayoutsCuenta.ActivaColumn),Boolean)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("El valor de la columna 'Activa' de la tabla 'layoutsCuenta' es DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tablelayoutsCuenta.ActivaColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Property IdFrecuencia() As Integer
+            Get
+                Try 
+                    Return CType(Me(Me.tablelayoutsCuenta.IdFrecuenciaColumn),Integer)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("El valor de la columna 'IdFrecuencia' de la tabla 'layoutsCuenta' es DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tablelayoutsCuenta.IdFrecuenciaColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
         Public Property layoutsKYCRow() As layoutsKYCRow
             Get
                 Return CType(Me.GetParentRow(Me.Table.ParentRelations("FK_layoutsCuenta_layoutsKYC")),layoutsKYCRow)
@@ -5560,6 +5616,30 @@ Partial Public Class Minds2DS
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
         Public Sub SetMontoMensualNull()
             Me(Me.tablelayoutsCuenta.MontoMensualColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Function IsActivaNull() As Boolean
+            Return Me.IsNull(Me.tablelayoutsCuenta.ActivaColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Sub SetActivaNull()
+            Me(Me.tablelayoutsCuenta.ActivaColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Function IsIdFrecuenciaNull() As Boolean
+            Return Me.IsNull(Me.tablelayoutsCuenta.IdFrecuenciaColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Sub SetIdFrecuenciaNull()
+            Me(Me.tablelayoutsCuenta.IdFrecuenciaColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -10322,6 +10402,8 @@ Namespace Minds2DSTableAdapters
             tableMapping.ColumnMappings.Add("FechaVencimiento", "FechaVencimiento")
             tableMapping.ColumnMappings.Add("IdMoneda", "IdMoneda")
             tableMapping.ColumnMappings.Add("MontoMensual", "MontoMensual")
+            tableMapping.ColumnMappings.Add("Activa", "Activa")
+            tableMapping.ColumnMappings.Add("IdFrecuencia", "IdFrecuencia")
             Me._adapter.TableMappings.Add(tableMapping)
             Me._adapter.DeleteCommand = New Global.System.Data.OleDb.OleDbCommand()
             Me._adapter.DeleteCommand.Connection = Me.Connection
@@ -10330,7 +10412,9 @@ Namespace Minds2DSTableAdapters
                 "R ([ImporteCredito] = ?)) AND ((? = 1 AND [FechaApertura] IS NULL) OR ([FechaApe"& _ 
                 "rtura] = ?)) AND ((? = 1 AND [FechaVencimiento] IS NULL) OR ([FechaVencimiento] "& _ 
                 "= ?)) AND ((? = 1 AND [IdMoneda] IS NULL) OR ([IdMoneda] = ?)) AND ((? = 1 AND ["& _ 
-                "MontoMensual] IS NULL) OR ([MontoMensual] = ?)))"
+                "MontoMensual] IS NULL) OR ([MontoMensual] = ?)) AND ((? = 1 AND [Activa] IS NULL"& _ 
+                ") OR ([Activa] = ?)) AND ((? = 1 AND [IdFrecuencia] IS NULL) OR ([IdFrecuencia] "& _ 
+                "= ?)))"
             Me._adapter.DeleteCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("Original_No_Cuenta", Global.System.Data.OleDb.OleDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "No_Cuenta", Global.System.Data.DataRowVersion.Original, false, Nothing))
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("Original_nic", Global.System.Data.OleDb.OleDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "nic", Global.System.Data.DataRowVersion.Original, false, Nothing))
@@ -10346,11 +10430,15 @@ Namespace Minds2DSTableAdapters
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("Original_IdMoneda", Global.System.Data.OleDb.OleDbType.[Integer], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "IdMoneda", Global.System.Data.DataRowVersion.Original, false, Nothing))
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("IsNull_MontoMensual", Global.System.Data.OleDb.OleDbType.[Integer], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "MontoMensual", Global.System.Data.DataRowVersion.Original, true, Nothing))
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("Original_MontoMensual", Global.System.Data.OleDb.OleDbType.Currency, 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "MontoMensual", Global.System.Data.DataRowVersion.Original, false, Nothing))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("IsNull_Activa", Global.System.Data.OleDb.OleDbType.[Integer], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "Activa", Global.System.Data.DataRowVersion.Original, true, Nothing))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("Original_Activa", Global.System.Data.OleDb.OleDbType.[Boolean], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "Activa", Global.System.Data.DataRowVersion.Original, false, Nothing))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("IsNull_IdFrecuencia", Global.System.Data.OleDb.OleDbType.[Integer], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "IdFrecuencia", Global.System.Data.DataRowVersion.Original, true, Nothing))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("Original_IdFrecuencia", Global.System.Data.OleDb.OleDbType.[Integer], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "IdFrecuencia", Global.System.Data.DataRowVersion.Original, false, Nothing))
             Me._adapter.InsertCommand = New Global.System.Data.OleDb.OleDbCommand()
             Me._adapter.InsertCommand.Connection = Me.Connection
             Me._adapter.InsertCommand.CommandText = "INSERT INTO [layoutsCuenta] ([No_Cuenta], [nic], [IdProducto], [IdSubproducto], ["& _ 
                 "ImporteCredito], [FechaApertura], [FechaVencimiento], [IdMoneda], [MontoMensual]"& _ 
-                ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                ", [Activa], [IdFrecuencia]) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             Me._adapter.InsertCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("No_Cuenta", Global.System.Data.OleDb.OleDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "No_Cuenta", Global.System.Data.DataRowVersion.Current, false, Nothing))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("nic", Global.System.Data.OleDb.OleDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "nic", Global.System.Data.DataRowVersion.Current, false, Nothing))
@@ -10361,16 +10449,20 @@ Namespace Minds2DSTableAdapters
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("FechaVencimiento", Global.System.Data.OleDb.OleDbType.DBTimeStamp, 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "FechaVencimiento", Global.System.Data.DataRowVersion.Current, false, Nothing))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("IdMoneda", Global.System.Data.OleDb.OleDbType.[Integer], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "IdMoneda", Global.System.Data.DataRowVersion.Current, false, Nothing))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("MontoMensual", Global.System.Data.OleDb.OleDbType.Currency, 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "MontoMensual", Global.System.Data.DataRowVersion.Current, false, Nothing))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("Activa", Global.System.Data.OleDb.OleDbType.[Boolean], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "Activa", Global.System.Data.DataRowVersion.Current, false, Nothing))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("IdFrecuencia", Global.System.Data.OleDb.OleDbType.[Integer], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "IdFrecuencia", Global.System.Data.DataRowVersion.Current, false, Nothing))
             Me._adapter.UpdateCommand = New Global.System.Data.OleDb.OleDbCommand()
             Me._adapter.UpdateCommand.Connection = Me.Connection
             Me._adapter.UpdateCommand.CommandText = "UPDATE [layoutsCuenta] SET [No_Cuenta] = ?, [nic] = ?, [IdProducto] = ?, [IdSubpr"& _ 
                 "oducto] = ?, [ImporteCredito] = ?, [FechaApertura] = ?, [FechaVencimiento] = ?, "& _ 
-                "[IdMoneda] = ?, [MontoMensual] = ? WHERE (([No_Cuenta] = ?) AND ([nic] = ?) AND "& _ 
-                "([IdProducto] = ?) AND ([IdSubproducto] = ?) AND ((? = 1 AND [ImporteCredito] IS"& _ 
-                " NULL) OR ([ImporteCredito] = ?)) AND ((? = 1 AND [FechaApertura] IS NULL) OR (["& _ 
-                "FechaApertura] = ?)) AND ((? = 1 AND [FechaVencimiento] IS NULL) OR ([FechaVenci"& _ 
-                "miento] = ?)) AND ((? = 1 AND [IdMoneda] IS NULL) OR ([IdMoneda] = ?)) AND ((? ="& _ 
-                " 1 AND [MontoMensual] IS NULL) OR ([MontoMensual] = ?)))"
+                "[IdMoneda] = ?, [MontoMensual] = ?, [Activa] = ?, [IdFrecuencia] = ? WHERE (([No"& _ 
+                "_Cuenta] = ?) AND ([nic] = ?) AND ([IdProducto] = ?) AND ([IdSubproducto] = ?) A"& _ 
+                "ND ((? = 1 AND [ImporteCredito] IS NULL) OR ([ImporteCredito] = ?)) AND ((? = 1 "& _ 
+                "AND [FechaApertura] IS NULL) OR ([FechaApertura] = ?)) AND ((? = 1 AND [FechaVen"& _ 
+                "cimiento] IS NULL) OR ([FechaVencimiento] = ?)) AND ((? = 1 AND [IdMoneda] IS NU"& _ 
+                "LL) OR ([IdMoneda] = ?)) AND ((? = 1 AND [MontoMensual] IS NULL) OR ([MontoMensu"& _ 
+                "al] = ?)) AND ((? = 1 AND [Activa] IS NULL) OR ([Activa] = ?)) AND ((? = 1 AND ["& _ 
+                "IdFrecuencia] IS NULL) OR ([IdFrecuencia] = ?)))"
             Me._adapter.UpdateCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("No_Cuenta", Global.System.Data.OleDb.OleDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "No_Cuenta", Global.System.Data.DataRowVersion.Current, false, Nothing))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("nic", Global.System.Data.OleDb.OleDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "nic", Global.System.Data.DataRowVersion.Current, false, Nothing))
@@ -10381,6 +10473,8 @@ Namespace Minds2DSTableAdapters
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("FechaVencimiento", Global.System.Data.OleDb.OleDbType.DBTimeStamp, 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "FechaVencimiento", Global.System.Data.DataRowVersion.Current, false, Nothing))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("IdMoneda", Global.System.Data.OleDb.OleDbType.[Integer], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "IdMoneda", Global.System.Data.DataRowVersion.Current, false, Nothing))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("MontoMensual", Global.System.Data.OleDb.OleDbType.Currency, 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "MontoMensual", Global.System.Data.DataRowVersion.Current, false, Nothing))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("Activa", Global.System.Data.OleDb.OleDbType.[Boolean], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "Activa", Global.System.Data.DataRowVersion.Current, false, Nothing))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("IdFrecuencia", Global.System.Data.OleDb.OleDbType.[Integer], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "IdFrecuencia", Global.System.Data.DataRowVersion.Current, false, Nothing))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("Original_No_Cuenta", Global.System.Data.OleDb.OleDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "No_Cuenta", Global.System.Data.DataRowVersion.Original, false, Nothing))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("Original_nic", Global.System.Data.OleDb.OleDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "nic", Global.System.Data.DataRowVersion.Original, false, Nothing))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("Original_IdProducto", Global.System.Data.OleDb.OleDbType.[Integer], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "IdProducto", Global.System.Data.DataRowVersion.Original, false, Nothing))
@@ -10395,6 +10489,10 @@ Namespace Minds2DSTableAdapters
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("Original_IdMoneda", Global.System.Data.OleDb.OleDbType.[Integer], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "IdMoneda", Global.System.Data.DataRowVersion.Original, false, Nothing))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("IsNull_MontoMensual", Global.System.Data.OleDb.OleDbType.[Integer], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "MontoMensual", Global.System.Data.DataRowVersion.Original, true, Nothing))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("Original_MontoMensual", Global.System.Data.OleDb.OleDbType.Currency, 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "MontoMensual", Global.System.Data.DataRowVersion.Original, false, Nothing))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("IsNull_Activa", Global.System.Data.OleDb.OleDbType.[Integer], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "Activa", Global.System.Data.DataRowVersion.Original, true, Nothing))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("Original_Activa", Global.System.Data.OleDb.OleDbType.[Boolean], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "Activa", Global.System.Data.DataRowVersion.Original, false, Nothing))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("IsNull_IdFrecuencia", Global.System.Data.OleDb.OleDbType.[Integer], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "IdFrecuencia", Global.System.Data.DataRowVersion.Original, true, Nothing))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("Original_IdFrecuencia", Global.System.Data.OleDb.OleDbType.[Integer], 0, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "IdFrecuencia", Global.System.Data.DataRowVersion.Original, false, Nothing))
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -10407,11 +10505,12 @@ Namespace Minds2DSTableAdapters
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
         Private Sub InitCommandCollection()
-            Me._commandCollection = New Global.System.Data.OleDb.OleDbCommand(2) {}
+            Me._commandCollection = New Global.System.Data.OleDb.OleDbCommand(3) {}
             Me._commandCollection(0) = New Global.System.Data.OleDb.OleDbCommand()
             Me._commandCollection(0).Connection = Me.Connection
-            Me._commandCollection(0).CommandText = "SELECT     No_Cuenta, nic, IdProducto, IdSubproducto, ImporteCredito, FechaApertu"& _ 
-                "ra, FechaVencimiento, IdMoneda, MontoMensual"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM         layoutsCuenta"
+            Me._commandCollection(0).CommandText = "SELECT        No_Cuenta, nic, IdProducto, IdSubproducto, ImporteCredito, FechaApe"& _ 
+                "rtura, FechaVencimiento, IdMoneda, MontoMensual, Activa, IdFrecuencia"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM     "& _ 
+                "       layoutsCuenta"
             Me._commandCollection(0).CommandType = Global.System.Data.CommandType.Text
             Me._commandCollection(1) = New Global.System.Data.OleDb.OleDbCommand()
             Me._commandCollection(1).Connection = Me.Connection
@@ -10421,9 +10520,10 @@ Namespace Minds2DSTableAdapters
             Me._commandCollection(1).Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("No_Cuenta", Global.System.Data.OleDb.OleDbType.[Char], 30, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "No_Cuenta", Global.System.Data.DataRowVersion.Current, false, Nothing))
             Me._commandCollection(2) = New Global.System.Data.OleDb.OleDbCommand()
             Me._commandCollection(2).Connection = Me.Connection
-            Me._commandCollection(2).CommandText = "UPDATE    layoutsCuenta"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SET              nic = ?, IdProducto = ?, IdSubproducto "& _ 
-                "= ?, ImporteCredito = ?, FechaApertura = ?, FechaVencimiento = ?, IdMoneda = ?, "& _ 
-                "MontoMensual = ?"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE     (No_Cuenta = ?)"
+            Me._commandCollection(2).CommandText = "UPDATE       layoutsCuenta"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SET                nic = ?, IdProducto = ?, IdSubprod"& _ 
+                "ucto = ?, ImporteCredito = ?, FechaApertura = ?, FechaVencimiento = ?, IdMoneda "& _ 
+                "= ?, MontoMensual = ?, Activa = ?, IdFrecuencia = ?"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE        (No_Cuenta = ?"& _ 
+                ")"
             Me._commandCollection(2).CommandType = Global.System.Data.CommandType.Text
             Me._commandCollection(2).Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("nic", Global.System.Data.OleDb.OleDbType.[Char], 30, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "nic", Global.System.Data.DataRowVersion.Current, false, Nothing))
             Me._commandCollection(2).Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("IdProducto", Global.System.Data.OleDb.OleDbType.[Integer], 4, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "IdProducto", Global.System.Data.DataRowVersion.Current, false, Nothing))
@@ -10433,7 +10533,17 @@ Namespace Minds2DSTableAdapters
             Me._commandCollection(2).Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("FechaVencimiento", Global.System.Data.OleDb.OleDbType.DBTimeStamp, 8, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "FechaVencimiento", Global.System.Data.DataRowVersion.Current, false, Nothing))
             Me._commandCollection(2).Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("IdMoneda", Global.System.Data.OleDb.OleDbType.[Integer], 4, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "IdMoneda", Global.System.Data.DataRowVersion.Current, false, Nothing))
             Me._commandCollection(2).Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("MontoMensual", Global.System.Data.OleDb.OleDbType.Currency, 8, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "MontoMensual", Global.System.Data.DataRowVersion.Current, false, Nothing))
+            Me._commandCollection(2).Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("Activa", Global.System.Data.OleDb.OleDbType.[Boolean], 1, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "Activa", Global.System.Data.DataRowVersion.Current, false, Nothing))
+            Me._commandCollection(2).Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("IdFrecuencia", Global.System.Data.OleDb.OleDbType.[Integer], 4, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "IdFrecuencia", Global.System.Data.DataRowVersion.Current, false, Nothing))
             Me._commandCollection(2).Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("Original_No_Cuenta", Global.System.Data.OleDb.OleDbType.[Char], 30, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "No_Cuenta", Global.System.Data.DataRowVersion.Original, false, Nothing))
+            Me._commandCollection(3) = New Global.System.Data.OleDb.OleDbCommand()
+            Me._commandCollection(3).Connection = Me.Connection
+            Me._commandCollection(3).CommandText = "UPDATE       layoutsCuenta"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SET                MontoMensual = ?, IdSubproducto = "& _ 
+                "?"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE        (No_Cuenta = ?)"
+            Me._commandCollection(3).CommandType = Global.System.Data.CommandType.Text
+            Me._commandCollection(3).Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("MontoMensual", Global.System.Data.OleDb.OleDbType.Currency, 8, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "MontoMensual", Global.System.Data.DataRowVersion.Current, false, Nothing))
+            Me._commandCollection(3).Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("IdSubproducto", Global.System.Data.OleDb.OleDbType.[Integer], 4, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "IdSubproducto", Global.System.Data.DataRowVersion.Current, false, Nothing))
+            Me._commandCollection(3).Parameters.Add(New Global.System.Data.OleDb.OleDbParameter("Original_No_Cuenta", Global.System.Data.OleDb.OleDbType.[Char], 30, Global.System.Data.ParameterDirection.Input, CType(0,Byte), CType(0,Byte), "No_Cuenta", Global.System.Data.DataRowVersion.Original, false, Nothing))
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -10492,7 +10602,7 @@ Namespace Minds2DSTableAdapters
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0"),  _
          Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
          Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Delete, true)>  _
-        Public Overloads Overridable Function Delete(ByVal Original_No_Cuenta As String, ByVal Original_nic As String, ByVal Original_IdProducto As Integer, ByVal Original_IdSubproducto As Integer, ByVal Original_ImporteCredito As String, ByVal Original_FechaApertura As Global.System.Nullable(Of Date), ByVal Original_FechaVencimiento As Global.System.Nullable(Of Date), ByVal Original_IdMoneda As Global.System.Nullable(Of Integer), ByVal Original_MontoMensual As Global.System.Nullable(Of Decimal)) As Integer
+        Public Overloads Overridable Function Delete(ByVal Original_No_Cuenta As String, ByVal Original_nic As String, ByVal Original_IdProducto As Integer, ByVal Original_IdSubproducto As Integer, ByVal Original_ImporteCredito As String, ByVal Original_FechaApertura As Global.System.Nullable(Of Date), ByVal Original_FechaVencimiento As Global.System.Nullable(Of Date), ByVal Original_IdMoneda As Global.System.Nullable(Of Integer), ByVal Original_MontoMensual As Global.System.Nullable(Of Decimal), ByVal Original_Activa As Global.System.Nullable(Of Boolean), ByVal Original_IdFrecuencia As Global.System.Nullable(Of Integer)) As Integer
             If (Original_No_Cuenta Is Nothing) Then
                 Throw New Global.System.ArgumentNullException("Original_No_Cuenta")
             Else
@@ -10540,6 +10650,20 @@ Namespace Minds2DSTableAdapters
                 Me.Adapter.DeleteCommand.Parameters(12).Value = CType(1,Object)
                 Me.Adapter.DeleteCommand.Parameters(13).Value = Global.System.DBNull.Value
             End If
+            If (Original_Activa.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(14).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(15).Value = CType(Original_Activa.Value,Boolean)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(14).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(15).Value = Global.System.DBNull.Value
+            End If
+            If (Original_IdFrecuencia.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(16).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(17).Value = CType(Original_IdFrecuencia.Value,Integer)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(16).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(17).Value = Global.System.DBNull.Value
+            End If
             Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.DeleteCommand.Connection.State
             If ((Me.Adapter.DeleteCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
                         <> Global.System.Data.ConnectionState.Open) Then
@@ -10559,7 +10683,7 @@ Namespace Minds2DSTableAdapters
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0"),  _
          Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
          Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Insert, true)>  _
-        Public Overloads Overridable Function Insert(ByVal No_Cuenta As String, ByVal nic As String, ByVal IdProducto As Integer, ByVal IdSubproducto As Integer, ByVal ImporteCredito As String, ByVal FechaApertura As Global.System.Nullable(Of Date), ByVal FechaVencimiento As Global.System.Nullable(Of Date), ByVal IdMoneda As Global.System.Nullable(Of Integer), ByVal MontoMensual As Global.System.Nullable(Of Decimal)) As Integer
+        Public Overloads Overridable Function Insert(ByVal No_Cuenta As String, ByVal nic As String, ByVal IdProducto As Integer, ByVal IdSubproducto As Integer, ByVal ImporteCredito As String, ByVal FechaApertura As Global.System.Nullable(Of Date), ByVal FechaVencimiento As Global.System.Nullable(Of Date), ByVal IdMoneda As Global.System.Nullable(Of Integer), ByVal MontoMensual As Global.System.Nullable(Of Decimal), ByVal Activa As Global.System.Nullable(Of Boolean), ByVal IdFrecuencia As Global.System.Nullable(Of Integer)) As Integer
             If (No_Cuenta Is Nothing) Then
                 Throw New Global.System.ArgumentNullException("No_Cuenta")
             Else
@@ -10597,6 +10721,16 @@ Namespace Minds2DSTableAdapters
             Else
                 Me.Adapter.InsertCommand.Parameters(8).Value = Global.System.DBNull.Value
             End If
+            If (Activa.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(9).Value = CType(Activa.Value,Boolean)
+            Else
+                Me.Adapter.InsertCommand.Parameters(9).Value = Global.System.DBNull.Value
+            End If
+            If (IdFrecuencia.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(10).Value = CType(IdFrecuencia.Value,Integer)
+            Else
+                Me.Adapter.InsertCommand.Parameters(10).Value = Global.System.DBNull.Value
+            End If
             Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.InsertCommand.Connection.State
             If ((Me.Adapter.InsertCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
                         <> Global.System.Data.ConnectionState.Open) Then
@@ -10626,6 +10760,8 @@ Namespace Minds2DSTableAdapters
                     ByVal FechaVencimiento As Global.System.Nullable(Of Date),  _
                     ByVal IdMoneda As Global.System.Nullable(Of Integer),  _
                     ByVal MontoMensual As Global.System.Nullable(Of Decimal),  _
+                    ByVal Activa As Global.System.Nullable(Of Boolean),  _
+                    ByVal IdFrecuencia As Global.System.Nullable(Of Integer),  _
                     ByVal Original_No_Cuenta As String,  _
                     ByVal Original_nic As String,  _
                     ByVal Original_IdProducto As Integer,  _
@@ -10634,7 +10770,9 @@ Namespace Minds2DSTableAdapters
                     ByVal Original_FechaApertura As Global.System.Nullable(Of Date),  _
                     ByVal Original_FechaVencimiento As Global.System.Nullable(Of Date),  _
                     ByVal Original_IdMoneda As Global.System.Nullable(Of Integer),  _
-                    ByVal Original_MontoMensual As Global.System.Nullable(Of Decimal)) As Integer
+                    ByVal Original_MontoMensual As Global.System.Nullable(Of Decimal),  _
+                    ByVal Original_Activa As Global.System.Nullable(Of Boolean),  _
+                    ByVal Original_IdFrecuencia As Global.System.Nullable(Of Integer)) As Integer
             If (No_Cuenta Is Nothing) Then
                 Throw New Global.System.ArgumentNullException("No_Cuenta")
             Else
@@ -10672,52 +10810,76 @@ Namespace Minds2DSTableAdapters
             Else
                 Me.Adapter.UpdateCommand.Parameters(8).Value = Global.System.DBNull.Value
             End If
+            If (Activa.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(9).Value = CType(Activa.Value,Boolean)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(9).Value = Global.System.DBNull.Value
+            End If
+            If (IdFrecuencia.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(10).Value = CType(IdFrecuencia.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(10).Value = Global.System.DBNull.Value
+            End If
             If (Original_No_Cuenta Is Nothing) Then
                 Throw New Global.System.ArgumentNullException("Original_No_Cuenta")
             Else
-                Me.Adapter.UpdateCommand.Parameters(9).Value = CType(Original_No_Cuenta,String)
+                Me.Adapter.UpdateCommand.Parameters(11).Value = CType(Original_No_Cuenta,String)
             End If
             If (Original_nic Is Nothing) Then
                 Throw New Global.System.ArgumentNullException("Original_nic")
             Else
-                Me.Adapter.UpdateCommand.Parameters(10).Value = CType(Original_nic,String)
+                Me.Adapter.UpdateCommand.Parameters(12).Value = CType(Original_nic,String)
             End If
-            Me.Adapter.UpdateCommand.Parameters(11).Value = CType(Original_IdProducto,Integer)
-            Me.Adapter.UpdateCommand.Parameters(12).Value = CType(Original_IdSubproducto,Integer)
+            Me.Adapter.UpdateCommand.Parameters(13).Value = CType(Original_IdProducto,Integer)
+            Me.Adapter.UpdateCommand.Parameters(14).Value = CType(Original_IdSubproducto,Integer)
             If (Original_ImporteCredito Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(13).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(14).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(13).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(14).Value = CType(Original_ImporteCredito,String)
-            End If
-            If (Original_FechaApertura.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(15).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(16).Value = CType(Original_FechaApertura.Value,Date)
-            Else
                 Me.Adapter.UpdateCommand.Parameters(15).Value = CType(1,Object)
                 Me.Adapter.UpdateCommand.Parameters(16).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(15).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(16).Value = CType(Original_ImporteCredito,String)
             End If
-            If (Original_FechaVencimiento.HasValue = true) Then
+            If (Original_FechaApertura.HasValue = true) Then
                 Me.Adapter.UpdateCommand.Parameters(17).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(18).Value = CType(Original_FechaVencimiento.Value,Date)
+                Me.Adapter.UpdateCommand.Parameters(18).Value = CType(Original_FechaApertura.Value,Date)
             Else
                 Me.Adapter.UpdateCommand.Parameters(17).Value = CType(1,Object)
                 Me.Adapter.UpdateCommand.Parameters(18).Value = Global.System.DBNull.Value
             End If
-            If (Original_IdMoneda.HasValue = true) Then
+            If (Original_FechaVencimiento.HasValue = true) Then
                 Me.Adapter.UpdateCommand.Parameters(19).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(20).Value = CType(Original_IdMoneda.Value,Integer)
+                Me.Adapter.UpdateCommand.Parameters(20).Value = CType(Original_FechaVencimiento.Value,Date)
             Else
                 Me.Adapter.UpdateCommand.Parameters(19).Value = CType(1,Object)
                 Me.Adapter.UpdateCommand.Parameters(20).Value = Global.System.DBNull.Value
             End If
-            If (Original_MontoMensual.HasValue = true) Then
+            If (Original_IdMoneda.HasValue = true) Then
                 Me.Adapter.UpdateCommand.Parameters(21).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(22).Value = CType(Original_MontoMensual.Value,Decimal)
+                Me.Adapter.UpdateCommand.Parameters(22).Value = CType(Original_IdMoneda.Value,Integer)
             Else
                 Me.Adapter.UpdateCommand.Parameters(21).Value = CType(1,Object)
                 Me.Adapter.UpdateCommand.Parameters(22).Value = Global.System.DBNull.Value
+            End If
+            If (Original_MontoMensual.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(23).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(24).Value = CType(Original_MontoMensual.Value,Decimal)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(23).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(24).Value = Global.System.DBNull.Value
+            End If
+            If (Original_Activa.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(25).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(26).Value = CType(Original_Activa.Value,Boolean)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(25).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(26).Value = Global.System.DBNull.Value
+            End If
+            If (Original_IdFrecuencia.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(27).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(28).Value = CType(Original_IdFrecuencia.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(27).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(28).Value = Global.System.DBNull.Value
             End If
             Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.UpdateCommand.Connection.State
             If ((Me.Adapter.UpdateCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
@@ -10747,6 +10909,8 @@ Namespace Minds2DSTableAdapters
                     ByVal FechaVencimiento As Global.System.Nullable(Of Date),  _
                     ByVal IdMoneda As Global.System.Nullable(Of Integer),  _
                     ByVal MontoMensual As Global.System.Nullable(Of Decimal),  _
+                    ByVal Activa As Global.System.Nullable(Of Boolean),  _
+                    ByVal IdFrecuencia As Global.System.Nullable(Of Integer),  _
                     ByVal Original_No_Cuenta As String,  _
                     ByVal Original_nic As String,  _
                     ByVal Original_IdProducto As Integer,  _
@@ -10755,8 +10919,10 @@ Namespace Minds2DSTableAdapters
                     ByVal Original_FechaApertura As Global.System.Nullable(Of Date),  _
                     ByVal Original_FechaVencimiento As Global.System.Nullable(Of Date),  _
                     ByVal Original_IdMoneda As Global.System.Nullable(Of Integer),  _
-                    ByVal Original_MontoMensual As Global.System.Nullable(Of Decimal)) As Integer
-            Return Me.Update(Original_No_Cuenta, nic, IdProducto, IdSubproducto, ImporteCredito, FechaApertura, FechaVencimiento, IdMoneda, MontoMensual, Original_No_Cuenta, Original_nic, Original_IdProducto, Original_IdSubproducto, Original_ImporteCredito, Original_FechaApertura, Original_FechaVencimiento, Original_IdMoneda, Original_MontoMensual)
+                    ByVal Original_MontoMensual As Global.System.Nullable(Of Decimal),  _
+                    ByVal Original_Activa As Global.System.Nullable(Of Boolean),  _
+                    ByVal Original_IdFrecuencia As Global.System.Nullable(Of Integer)) As Integer
+            Return Me.Update(Original_No_Cuenta, nic, IdProducto, IdSubproducto, ImporteCredito, FechaApertura, FechaVencimiento, IdMoneda, MontoMensual, Activa, IdFrecuencia, Original_No_Cuenta, Original_nic, Original_IdProducto, Original_IdSubproducto, Original_ImporteCredito, Original_FechaApertura, Original_FechaVencimiento, Original_IdMoneda, Original_MontoMensual, Original_Activa, Original_IdFrecuencia)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -10794,7 +10960,7 @@ Namespace Minds2DSTableAdapters
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0"),  _
          Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
          Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Update, false)>  _
-        Public Overloads Overridable Function UpdateCuenta(ByVal nic As String, ByVal IdProducto As Integer, ByVal IdSubproducto As Integer, ByVal ImporteCredito As String, ByVal FechaApertura As Global.System.Nullable(Of Date), ByVal FechaVencimiento As Global.System.Nullable(Of Date), ByVal IdMoneda As Global.System.Nullable(Of Integer), ByVal MontoMensual As Global.System.Nullable(Of Decimal), ByVal Original_No_Cuenta As String) As Integer
+        Public Overloads Overridable Function UpdateCuenta(ByVal nic As String, ByVal IdProducto As Integer, ByVal IdSubproducto As Integer, ByVal ImporteCredito As String, ByVal FechaApertura As Global.System.Nullable(Of Date), ByVal FechaVencimiento As Global.System.Nullable(Of Date), ByVal IdMoneda As Global.System.Nullable(Of Integer), ByVal MontoMensual As Global.System.Nullable(Of Decimal), ByVal Activa As Global.System.Nullable(Of Boolean), ByVal IdFrecuencia As Global.System.Nullable(Of Integer), ByVal Original_No_Cuenta As String) As Integer
             Dim command As Global.System.Data.OleDb.OleDbCommand = Me.CommandCollection(2)
             If (nic Is Nothing) Then
                 Throw New Global.System.ArgumentNullException("nic")
@@ -10828,10 +10994,53 @@ Namespace Minds2DSTableAdapters
             Else
                 command.Parameters(7).Value = Global.System.DBNull.Value
             End If
+            If (Activa.HasValue = true) Then
+                command.Parameters(8).Value = CType(Activa.Value,Boolean)
+            Else
+                command.Parameters(8).Value = Global.System.DBNull.Value
+            End If
+            If (IdFrecuencia.HasValue = true) Then
+                command.Parameters(9).Value = CType(IdFrecuencia.Value,Integer)
+            Else
+                command.Parameters(9).Value = Global.System.DBNull.Value
+            End If
             If (Original_No_Cuenta Is Nothing) Then
                 Throw New Global.System.ArgumentNullException("Original_No_Cuenta")
             Else
-                command.Parameters(8).Value = CType(Original_No_Cuenta,String)
+                command.Parameters(10).Value = CType(Original_No_Cuenta,String)
+            End If
+            Dim previousConnectionState As Global.System.Data.ConnectionState = command.Connection.State
+            If ((command.Connection.State And Global.System.Data.ConnectionState.Open)  _
+                        <> Global.System.Data.ConnectionState.Open) Then
+                command.Connection.Open
+            End If
+            Dim returnValue As Integer
+            Try 
+                returnValue = command.ExecuteNonQuery
+            Finally
+                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
+                    command.Connection.Close
+                End If
+            End Try
+            Return returnValue
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Update, false)>  _
+        Public Overloads Overridable Function UpdateMensualidad(ByVal MontoMensual As Global.System.Nullable(Of Decimal), ByVal IdSubproducto As Integer, ByVal Original_No_Cuenta As String) As Integer
+            Dim command As Global.System.Data.OleDb.OleDbCommand = Me.CommandCollection(3)
+            If (MontoMensual.HasValue = true) Then
+                command.Parameters(0).Value = CType(MontoMensual.Value,Decimal)
+            Else
+                command.Parameters(0).Value = Global.System.DBNull.Value
+            End If
+            command.Parameters(1).Value = CType(IdSubproducto,Integer)
+            If (Original_No_Cuenta Is Nothing) Then
+                Throw New Global.System.ArgumentNullException("Original_No_Cuenta")
+            Else
+                command.Parameters(2).Value = CType(Original_No_Cuenta,String)
             End If
             Dim previousConnectionState As Global.System.Data.ConnectionState = command.Connection.State
             If ((command.Connection.State And Global.System.Data.ConnectionState.Open)  _
