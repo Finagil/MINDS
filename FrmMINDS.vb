@@ -425,7 +425,7 @@ Public Class FrmMINDS
         'dsAgil.Tables("Pagos").Clear()
         With cm1
             .CommandType = CommandType.Text
-            .CommandText = "SELECT Fecha, Anexo,Letra, Importe, Cheque, Promo, Cliente, Sucursal, Tipar, EsEfectivo, Banco, minds, LiquidezInmediata, Feven " _
+            .CommandText = "SELECT Fecha, Anexo,Letra, Importe, Cheque, Promo, Cliente, Sucursal, Tipar, EsEfectivo, Banco, minds, LiquidezInmediata, Feven, id_historia " _
              & " FROM Minds_Pagos where fecha between '" & fecha.ToString("yyyyMMdd") & "' and '" & fechaLim.ToString("yyyyMMdd") _
              & "' and anexo <> '00041720003' order by Fecha, Anexo"
             .Connection = cnAgil
@@ -510,7 +510,7 @@ Public Class FrmMINDS
             cDoc = cCheque.Trim & "-" & cAnexo & "-" & drAnexo("Letra")
 
             If drAnexo("letra") = "888" Or drAnexo("letra") = "999" Then
-                cDoc = drAnexo("Anexo") & "-" & Trim(drAnexo("Letra")) & "-" & cCheque.Trim & "-" & drAnexo(0) & "-" & drAnexo(3)
+                cDoc = drAnexo("Anexo") & "-" & Trim(drAnexo("Letra")) & "-" & cCheque.Trim & "-" & drAnexo("Fecha") & "-" & drAnexo("id_historia")
                 'cDoc = cCheque.Trim & "-" & drAnexo("Anexo")
                 'If cDoc.Length >= 28 Then
                 '    cDoc = cDoc.Substring(0, 28) & CInt(Math.Ceiling(Rnd() * 9)) + 1
@@ -937,7 +937,7 @@ Public Class FrmMINDS
             '    cDoc = Trim(r.Serie) & "-" & Trim(r.Numero) & "-" & Trim(r.Anexo) & Trim(r.Tipar)
             'End If
             'cDoc = Trim(r.Serie) & Trim(r.Numero) & "-" & cCheque
-            cDoc = cCheque.Trim & "-" & cAnexo & r.Letra
+            cDoc = cCheque.Trim & "-" & cAnexo & r.Letra & "-" & r.Fecha
             'x = Pagos.Existe(cDoc)
             If nPago > 0 Then
                 Try
@@ -1029,7 +1029,7 @@ Public Class FrmMINDS
 
             With cm1
                 .CommandType = CommandType.Text
-                .CommandText = "SELECT * FROM Minds_Cuentas "
+                .CommandText = "SELECT * FROM Minds_Cuentas"
                 .Connection = cnAgil
             End With
 

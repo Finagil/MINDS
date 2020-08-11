@@ -6364,8 +6364,8 @@ Partial Public Class ProductionDataSet
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
-        Public Function FindByAnexoLetraChequeClienteFechaTerminacion(ByVal Anexo As String, ByVal Letra As String, ByVal Cheque As String, ByVal Cliente As String, ByVal FechaTerminacion As Date) As Minds_Pagos_AvioRow
-            Return CType(Me.Rows.Find(New Object() {Anexo, Letra, Cheque, Cliente, FechaTerminacion}),Minds_Pagos_AvioRow)
+        Public Function FindByFechaAnexoLetraChequeClienteFechaTerminacion(ByVal Fecha As String, ByVal Anexo As String, ByVal Letra As String, ByVal Cheque As String, ByVal Cliente As String, ByVal FechaTerminacion As Date) As Minds_Pagos_AvioRow
+            Return CType(Me.Rows.Find(New Object() {Fecha, Anexo, Letra, Cheque, Cliente, FechaTerminacion}),Minds_Pagos_AvioRow)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -6432,7 +6432,8 @@ Partial Public Class ProductionDataSet
             MyBase.Columns.Add(Me.columnEsEfectivo)
             Me.columnMINDS = New Global.System.Data.DataColumn("MINDS", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnMINDS)
-            Me.Constraints.Add(New Global.System.Data.UniqueConstraint("Constraint1", New Global.System.Data.DataColumn() {Me.columnAnexo, Me.columnLetra, Me.columnCheque, Me.columnCliente, Me.columnFechaTerminacion}, true))
+            Me.Constraints.Add(New Global.System.Data.UniqueConstraint("Constraint1", New Global.System.Data.DataColumn() {Me.columnFecha, Me.columnAnexo, Me.columnLetra, Me.columnCheque, Me.columnCliente, Me.columnFechaTerminacion}, true))
+            Me.columnFecha.AllowDBNull = false
             Me.columnFecha.MaxLength = 8
             Me.columnAnexo.AllowDBNull = false
             Me.columnAnexo.MaxLength = 9
@@ -10457,11 +10458,7 @@ Partial Public Class ProductionDataSet
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
         Public Property Fecha() As String
             Get
-                Try 
-                    Return CType(Me(Me.tableMinds_Pagos_Avio.FechaColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("El valor de la columna 'Fecha' de la tabla 'Minds_Pagos_Avio' es DBNull.", e)
-                End Try
+                Return CType(Me(Me.tableMinds_Pagos_Avio.FechaColumn),String)
             End Get
             Set
                 Me(Me.tableMinds_Pagos_Avio.FechaColumn) = value
@@ -10604,18 +10601,6 @@ Partial Public Class ProductionDataSet
                 Me(Me.tableMinds_Pagos_Avio.MINDSColumn) = value
             End Set
         End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
-        Public Function IsFechaNull() As Boolean
-            Return Me.IsNull(Me.tableMinds_Pagos_Avio.FechaColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
-        Public Sub SetFechaNull()
-            Me(Me.tableMinds_Pagos_Avio.FechaColumn) = Global.System.Convert.DBNull
-        End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
@@ -15426,12 +15411,12 @@ Namespace ProductionDataSetTableAdapters
         Public Overloads Overridable Function Fill(ByVal dataTable As ProductionDataSet.Minds_Pagos_AvioDataTable, ByVal Fecha As String, ByVal FechaLim As String) As Integer
             Me.Adapter.SelectCommand = Me.CommandCollection(0)
             If (Fecha Is Nothing) Then
-                Me.Adapter.SelectCommand.Parameters(0).Value = Global.System.DBNull.Value
+                Throw New Global.System.ArgumentNullException("Fecha")
             Else
                 Me.Adapter.SelectCommand.Parameters(0).Value = CType(Fecha,String)
             End If
             If (FechaLim Is Nothing) Then
-                Me.Adapter.SelectCommand.Parameters(1).Value = Global.System.DBNull.Value
+                Throw New Global.System.ArgumentNullException("FechaLim")
             Else
                 Me.Adapter.SelectCommand.Parameters(1).Value = CType(FechaLim,String)
             End If
@@ -15449,12 +15434,12 @@ Namespace ProductionDataSetTableAdapters
         Public Overloads Overridable Function GetData(ByVal Fecha As String, ByVal FechaLim As String) As ProductionDataSet.Minds_Pagos_AvioDataTable
             Me.Adapter.SelectCommand = Me.CommandCollection(0)
             If (Fecha Is Nothing) Then
-                Me.Adapter.SelectCommand.Parameters(0).Value = Global.System.DBNull.Value
+                Throw New Global.System.ArgumentNullException("Fecha")
             Else
                 Me.Adapter.SelectCommand.Parameters(0).Value = CType(Fecha,String)
             End If
             If (FechaLim Is Nothing) Then
-                Me.Adapter.SelectCommand.Parameters(1).Value = Global.System.DBNull.Value
+                Throw New Global.System.ArgumentNullException("FechaLim")
             Else
                 Me.Adapter.SelectCommand.Parameters(1).Value = CType(FechaLim,String)
             End If
