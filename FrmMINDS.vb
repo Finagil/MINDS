@@ -1109,7 +1109,7 @@ Public Class FrmMINDS
                         Cuentas.UpdateMensualidad(nPago.ToString, cProduct, cAnexo)
                     End If
                 Catch ex As Exception
-                    EnviacORREO("ecacerest@lamoderna.com.mx,viapolo@lamoderna.com.mx", ex.Message & "  " & cAnexo, "error en CUENTAS", "Minds@finagil.com.mx")
+                    EnviacORREO("ecacerest@lamoderna.com.mx;viapolo@lamoderna.com.mx", ex.Message & "  " & cAnexo, "error en CUENTAS", "Minds@finagil.com.mx")
                 End Try
             Next
 
@@ -1163,7 +1163,7 @@ Public Class FrmMINDS
                 End If
             Next
         Catch ex As Exception
-            EnviacORREO("ecacerest@lamoderna.com.mx,viapolo@lamoderna.com.mx", ex.Message & "  " & cAnexo, "error en CUENTAS", "Minds@finagil.com.mx")
+            EnviacORREO("ecacerest@lamoderna.com.mx;viapolo@lamoderna.com.mx", ex.Message & "  " & cAnexo, "error en CUENTAS", "Minds@finagil.com.mx")
         End Try
         cnAgil.Close()
     End Sub
