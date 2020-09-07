@@ -892,7 +892,7 @@ Public Class FrmMINDS
         Dim Avio As New ProductionDataSetTableAdapters.Minds_Pagos_AvioTableAdapter
         Dim TAvio As New ProductionDataSet.Minds_Pagos_AvioDataTable
         Dim cCiclo As String = ""
-        Avio.Fill(TAvio, fecha.ToString("yyyyMMdd"), fechaLim.ToString("yyyyMMdd"))
+        eAvio.Fill(TAvio, fecha.ToString("yyyyMMdd"), fechaLim.ToString("yyyyMMdd"))
         For Each r As ProductionDataSet.Minds_Pagos_AvioRow In TAvio.Rows
             If r.Anexo <> "032810008" Then
                 'Continue For
@@ -1029,7 +1029,7 @@ Public Class FrmMINDS
 
             With cm1
                 .CommandType = CommandType.Text
-                .CommandText = "SELECT * FROM Minds_Cuentas"
+                .CommandText = "SELECT * FROM Minds_Cuentas" ' where Anexo = '046020002'"
                 .Connection = cnAgil
             End With
 
@@ -1064,24 +1064,29 @@ Public Class FrmMINDS
                 cImporte = drAnexo("MtoFin").ToString
                 cFecha = CTOD(drAnexo("Fechacon")).ToShortDateString
                 drEdoctav = drAnexo.GetChildRows("AnexoEdoctav")
-                Select Case UCase(drAnexo("Vencimiento"))
-                    Case "SEMANAL"
-                        ID_Frecuencia = 1
-                    Case "CATORCENAL"
-                        ID_Frecuencia = 2
-                    Case "QUINCENAL"
-                        ID_Frecuencia = 3
-                    Case "MENSUAL"
-                        ID_Frecuencia = 4
-                    Case "BIMESTRAL"
-                        ID_Frecuencia = 5
-                    Case "TRIMESTRAL", "TRIMESTRE"
-                        ID_Frecuencia = 6
-                    Case "SEMESTRAL"
-                        ID_Frecuencia = 7
-                    Case "ANUAL"
-                        ID_Frecuencia = 8
-                End Select
+                If IsDBNull(drAnexo("Vencimiento")) Then
+                    ID_Frecuencia = 8
+                Else
+                    Select Case UCase(drAnexo("Vencimiento"))
+                        Case "SEMANAL"
+                            ID_Frecuencia = 1
+                        Case "CATORCENAL"
+                            ID_Frecuencia = 2
+                        Case "QUINCENAL"
+                            ID_Frecuencia = 3
+                        Case "MENSUAL"
+                            ID_Frecuencia = 4
+                        Case "BIMESTRAL"
+                            ID_Frecuencia = 5
+                        Case "TRIMESTRAL", "TRIMESTRE"
+                            ID_Frecuencia = 6
+                        Case "SEMESTRAL"
+                            ID_Frecuencia = 7
+                        Case "ANUAL"
+                            ID_Frecuencia = 8
+                    End Select
+                End If
+
                 Select Case drAnexo("Tipar")
                     Case "F"
                         cProduct = "1"
